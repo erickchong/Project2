@@ -36,7 +36,7 @@ class FeatureContext implements Context
 
 		$this->session->start();
 
-		$this->session->visit('http://localhost:80/LyricsCloud/');
+		$this->session->visit('http://localhost:80/PaperCloud/');
 		$this->page = $this->session->getPage();
 
 		$this->paperSearchBar = $this->page->find("css", "#paperSearchBar");
