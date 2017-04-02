@@ -1,0 +1,89 @@
+#header {
+	font-size: 80px;
+	text-align: center;
+	font-family: futura;
+	font-style: italic;
+	padding-bottom: 20px;
+}
+
+body {
+  	padding-top: 15px;
+  	background: silver;
+  	font-family: futura;
+}
+
+#cloudPane {
+	text-align: center;
+	min-height: 300px;
+	margin-bottom: 10px;
+}
+
+#cloudBox {
+	width: 400px;
+	margin: 0 auto;
+}
+
+#generating {
+	padding-top: 100px;
+}
+
+#innerCloud {
+	background: white;
+	padding: 10px;
+}
+
+#inputPane {
+	width: 65%;
+	margin: 0 auto;
+}
+
+#artist_title {
+	padding-bottom: 15px;
+  	background: silver;
+  	font-family: futura;
+	font-size: 50px;
+}
+
+
+#inputBox {
+	float: left;
+	width: 275px;
+	height: 40px;
+	border: 3px solid purple;
+	margin-bottom: 8px;
+	font-size: 20px;
+}
+
+#submitButton {
+	float: left;
+	background: purple;
+	font-family: futura;
+	font-size: 20px;
+	margin-left: 8px;
+	color: white;
+	border: none;
+}
+
+#shareToFacebookButton {
+	visibility: hidden;
+	float: left;
+	background: purple;
+	font-family: futura;
+	font-size: 20px;
+	margin-left: 8px;
+	color: white;
+	border: none;
+}
+	
+
+#addMoreButton {
+	visibility: hidden;
+	float: left;
+	background: purple;
+	font-family: futura;
+	font-size: 20px;
+	margin-left: 8px;
+	color: white;
+	border: none;
+	
+}

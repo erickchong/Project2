@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>LyriCloud</title>
+
+<link href="./dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="./dist/css/bootstrap-theme.min.css" rel="stylesheet">
+<link href="./dist/css/theme.css" rel="stylesheet">
+<script type="text/javascript" src="./js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="./js/ajax.js"></script>
+<script type="text/javascript" src="./js/fb-ui-share.js"></script>
+</head>
+
+<body>  
+  <header>
+    <div id="header">NerdEngine</div>
+  </header> 
+  <div id="cloudPane">
+    <div id="cloudBox"></div>
+  </div>
+  
+    <div id ="inputPane">
+      <input id="inputBox" type="text" name="text" placeholder="Input Text Here">
+      <div id="buttons">
+        <button id="submitButton" class="btn btn-default">Search</button>
+        <button id="shareToFacebookButton" class="btn btn-default" >Share to Facebook</button>
+
+        <script>
+        document.getElementById('shareToFacebookButton').onclick = function() {
+          FB.ui(
+            {
+              method: 'feed',
+              name: 'LyriCloud',
+              link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+              picture: 'http://www.internal-communication.com/wp-content/uploads/2012/01/word-cloud-internal-comms.png',
+              caption: 'Your custom artist lyric cloud',
+              description: 'Artist Name Goes here'
+            },
+            function(response) {
+              if (response && response.post_id) {
+                alert('Post was published.');
+              } else {
+                alert('Post was not published.');
+              }
+            }
+          );
+        }
+        </script>
+
+        <button id="addMoreButton" class="btn btn-default" >Add More To Cloud</button>
+      </div>
+    </div>
+  
+</body>
+</html>
+
+<script>
+  $("#submitButton").click(function(){
+    $.ajax({
+        beforeSend: function() {
+          $('#cloudBox').html("<div id=\"generating\">Generating Cloud...</div>");
+        },
+        type: "post",
+        url: "getWordCloud.php",
+        data: {
+          prev: '',
+          name: $('#inputBox').val()
+        },
+        success: function(msg){
+          $('#cloudBox').html(msg);
+          $('#addMoreButton').css("visibility", "visible");
+           $('#shareToFacebookButton').css("visibility", "visible");
+        }
+    });
+  });
+</script>

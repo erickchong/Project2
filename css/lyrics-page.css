@@ -1,0 +1,47 @@
+.highlight {
+        background: yellow;
+}
+
+body {
+	padding-top: 15px;
+  	background: silver;
+  	font-family: futura;
+}
+
+header {
+	font-family: futura;
+}
+
+#header {
+	font-size: 60px;
+}
+
+#artist {
+	font-size: 30px;
+}
+
+#lyrics {
+	font-family: futura;
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+
+#songSelection {
+	float: left;
+	background: purple;
+	font-family: futura;
+	font-size: 20px;
+	margin-left: 8px;
+	color: white;
+	border: none;
+}
+
+#home {
+	float: left;
+	background: purple;
+	font-family: futura;
+	font-size: 20px;
+	margin-left: 8px;
+	color: white;
+	border: none;
+}
