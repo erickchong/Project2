@@ -4,11 +4,13 @@
 	font-family: futura;
 	font-style: italic;
 	padding-bottom: 20px;
+	color: #1E4347;
+
 }
 
 body {
   	padding-top: 15px;
-  	background: silver;
+  	background: #F4CC70;
   	font-family: futura;
 }
 
@@ -47,16 +49,17 @@ body {
 
 #inputBox {
 	float: left;
-	width: 275px;
+	width: 400px;
 	height: 40px;
-	border: 3px solid purple;
+	border: 3px solid #1E4347;
+	margin-left: 150px;
 	margin-bottom: 8px;
 	font-size: 20px;
 }
 
 #submitButton {
 	float: left;
-	background: purple;
+	background: #1E4347;
 	font-family: futura;
 	font-size: 20px;
 	margin-left: 8px;
