@@ -58,7 +58,7 @@ class WordCloud
                 }else{
                     $r = floor( 255 * ($frequency / $tmax) ); $g = 0; $b = 0;
                 }   
-                $r = 0; $g = 0; $b = floor( 255 * ($frequency / $tmax) );
+               // $r = 0; $g = 0; $b = floor( 255 * ($frequency / $tmax) );
                 $color = '#' . sprintf('%02s', dechex($r)) . sprintf('%02s', dechex($g)) . sprintf('%02s', dechex($b));
             }
             else {
