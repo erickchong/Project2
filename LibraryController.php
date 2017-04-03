@@ -102,7 +102,17 @@ class LibraryController {
 		$libraryController = new LibraryController();
 		$acmPapers = $libraryController->getACMPapersWithAuthor($author, $limit);
 		$ieeePapers = $libraryController->getIEEEPapersWithAuthor($author, $limit);
-		$keywords = $acmPapers["keywords"] . " " . $ieeePapers["keywords"];
+		$keywords = "";
+		foreach($acmPapers as $paper){
+			$keystring = $paper["keywords"];
+			
+			$keywords = $keywords." ".$keystring;
+		}
+		foreach($ieeePapers as $paper){
+			$keystring = $paper["keywords"];
+			$keywords = $keywords." ".$keystring;
+		}
+		//$keywords = $acmPapers["keywords"] . " " . $ieeePapers["keywords"];
 		return $keywords; 
 		
 	}

@@ -20,7 +20,7 @@
   </div>
   
     <div id ="inputPane">
-      <input id="inputBox" type="text" name="text" placeholder="Input Researcher's name or keyword phrase">
+      <input id="inputBox" type="text" name="text" placeholder="Input Author Name">
       <div id="buttons">
         <button id="submitButton" class="btn btn-default">Search</button>
         <button id="shareToFacebookButton" class="btn btn-default" >Share to Facebook</button>
@@ -68,8 +68,8 @@
         },
         success: function(msg){
           $('#cloudBox').html(msg);
-          $('#addMoreButton').css("visibility", "visible");
-           $('#shareToFacebookButton').css("visibility", "visible");
+          // $('#addMoreButton').css("visibility", "visible");
+          //  $('#shareToFacebookButton').css("visibility", "visible");
         }
     });
   });
