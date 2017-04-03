@@ -50,7 +50,15 @@ class WordCloud
             if ($frequency > $tmin) {
                 $font_size = floor(  ( $fmax * ($frequency - $tmin) ) / ( $tmax - $tmin )  );
                 /* Define a color index based on the frequency of the word */
-                $r = $g = 0; $b = floor( 255 * ($frequency / $tmax) );
+                $random = rand(1, 3);
+                if($random == 1){
+                    $r = 0; $g = 0; $b = floor( 255 * ($frequency / $tmax) );
+                }else if($random == 2){
+                    $r = 0; $g = floor( 255 * ($frequency / $tmax) ); $b = 0;
+                }else{
+                    $r = floor( 255 * ($frequency / $tmax) ); $g = 0; $b = 0;
+                }   
+                $r = 0; $g = 0; $b = floor( 255 * ($frequency / $tmax) );
                 $color = '#' . sprintf('%02s', dechex($r)) . sprintf('%02s', dechex($g)) . sprintf('%02s', dechex($b));
             }
             else {

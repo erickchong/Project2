@@ -1,17 +1,21 @@
 #header {
 	font-size: 80px;
 	text-align: center;
-	font-family: futura;
-	font-style: italic;
+	font-family: Lucida Console;
 	padding-bottom: 20px;
-	color: #1E4347;
+	color: #f2f2f2;
 
 }
 
 body {
   	padding-top: 15px;
-  	background: #F4CC70;
-  	font-family: futura;
+  	
+  	background: #2C3E50; /* For browsers that do not support gradients */
+	 background: -webkit-linear-gradient(#2C3E50, #FD746C); /* For Safari 5.1 to 6.0 */
+	 background: -o-linear-gradient(#2C3E50, #FD746C); /* For Opera 11.1 to 12.0 */
+	 background: -moz-linear-gradient(#2C3E50, #FD746C); /* For Firefox 3.6 to 15 */
+	 background: linear-gradient(#2C3E50, #FD746C); /* Standard syntax */
+  	font-family: Lucida Console;
 }
 
 #cloudPane {
@@ -21,7 +25,7 @@ body {
 }
 
 #cloudBox {
-	width: 400px;
+	width: 800px;
 	margin: 0 auto;
 }
 
@@ -41,9 +45,9 @@ body {
 
 #artist_title {
 	padding-bottom: 15px;
-  	background: silver;
-  	font-family: futura;
+  	font-family: Lucida Console;
 	font-size: 50px;
+	color: #F2F2F2;
 }
 
 
@@ -51,7 +55,7 @@ body {
 	float: left;
 	width: 400px;
 	height: 40px;
-	border: 3px solid #1E4347;
+	border: 3px solid #2C3E50;
 	margin-left: 150px;
 	margin-bottom: 8px;
 	font-size: 20px;
@@ -59,11 +63,11 @@ body {
 
 #submitButton {
 	float: left;
-	background: #1E4347;
-	font-family: futura;
+	background: #2C3E50;
+	font-family: Lucida Console;
 	font-size: 20px;
 	margin-left: 8px;
-	color: white;
+	color: #F2F2F2;
 	border: none;
 }
 
