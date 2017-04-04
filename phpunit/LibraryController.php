@@ -83,14 +83,19 @@ class LibraryController {
         	$paper["authors"] = $document->authors; //need to parse 
         	$paper["abstract"] = $document->abstract; 
         	$paper["keywords"]  = "";
+        	$count = count($document->thesaurusterms->term);
         	
-        	foreach($document->thesaurusterms as $keyword){
-        		$word = $keyword->term;
-        		$paper["keywords"]  =  $paper["keywords"]. " ". $word;	
+        	for($a = 0; $a < $count; $a++){
+        		$word = $document->thesaurusterms->term[$a];
+        		$paper["keywords"]  =  $paper["keywords"]. " ". $word;
         	}
+        	// foreach($document->thesaurusterms->term as $keyword){
+        	// 	$word = $keyword;
+        	// 	$paper["keywords"]  =  $paper["keywords"]. " ". $word;	
+        	// }
 
         	$paper["pdfURL"] = $document->pdf;
-
+        	$papers[] = $paper;
 
         }
 		
@@ -103,17 +108,21 @@ class LibraryController {
 		$acmPapers = $libraryController->getACMPapersWithAuthor($author, $limit);
 		$ieeePapers = $libraryController->getIEEEPapersWithAuthor($author, $limit);
 		$keywords = "";
-		foreach($acmPapers as $paper){
-			$keystring = $paper["keywords"];
-			
-			$keywords = $keywords." ".$keystring;
+		if(count($acmPapers)==0 && count($ieeePapers)==0){
+
+		}else{
+			foreach($acmPapers as $paper){
+				$keystring = $paper["keywords"];
+				$keywords = $keywords." ".$keystring;
+			}
+			foreach($ieeePapers as $paper){
+				$keystring = $paper["keywords"];
+				$keywords = $keywords." ".$keystring;
+			}
+			//$keywords = $acmPapers["keywords"] . " " . $ieeePapers["keywords"];
+			$keywords = trim(preg_replace('/\s+/', ' ', $keywords)); // removes all unneccessary spaces and newlines
 		}
-		foreach($ieeePapers as $paper){
-			$keystring = $paper["keywords"];
-			$keywords = $keywords." ".$keystring;
-		}
-		//$keywords = $acmPapers["keywords"] . " " . $ieeePapers["keywords"];
-		$keywords = trim(preg_replace('/\s+/', ' ', $keywords)); // removes all unneccessary spaces and newlines
+		
 		return $keywords;
 		
 	}
