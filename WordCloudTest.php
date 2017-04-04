@@ -1,5 +1,5 @@
 <?php
-
+include 'LibraryController.php';
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -73,26 +73,26 @@ final class WordCloudTest extends TestCase
 	}
 
 	//Word Cloud is an API so we just need to test if the API call worked or not, not the substance of the API
-	public function test_word_cloud(){
-		//Arrange
+	// public function test_word_cloud(){
+	// 	//Arrange
 
 
-        //Act
-		$cloud = new WordCloud();
-		$name = "Rihanna";
-        $text = $cloud->getLyricsForArtist($name);
-        $words = str_word_count($text, 1);
-        $word_frequency = $cloud->word_freq($words);
-		$word_c = $cloud->word_cloud($word_frequency, $name);
-		$tags = $word_c[1];
+ //        //Act
+	// 	$cloud = new WordCloud();
+	// 	$name = "Rihanna";
+ //        $text = $cloud->getLyricsForArtist($name);
+ //        $words = str_word_count($text, 1);
+ //        $word_frequency = $cloud->word_freq($words);
+	// 	$word_c = $cloud->word_cloud($word_frequency, $name);
+	// 	$tags = $word_c[1];
 
-		//Assert
-		//tests if the right number of tags come up 
-		//$this->assertEquals($tags, 14);
-		//tests if the call worked
-		$this->assertLessThan($tags, 0);
+	// 	//Assert
+	// 	//tests if the right number of tags come up 
+	// 	//$this->assertEquals($tags, 14);
+	// 	//tests if the call worked
+	// 	$this->assertLessThan($tags, 0);
 
-	}
+	// }
 
 	//this test should check if the API call was successful or not (the job of a remote API client), not what is in those calls
 	// public function test_getLyricsForArtist(){
@@ -113,10 +113,12 @@ final class WordCloudTest extends TestCase
 
 		//Arrange
 		$cloud = new WordCloud();
-		$name = "Rihanna";
+		$name = "madan";
+		$library = new LibraryController;
+        $text = $library->combineKeywords($name, 10);
 
 		//Act
-        $text = $cloud->getLyricsForArtist($name);
+        //$text = $cloud->getLyricsForArtist($name);
         $words = str_word_count($text, 1);
         $word_frequency = $cloud->word_freq($words);
 		$word_c = $cloud->word_cloud($word_frequency, $name);
@@ -124,9 +126,9 @@ final class WordCloudTest extends TestCase
 
 		//Assert
 		//tests if the right number of tags come up 
-		//$this->assertEquals($tags, 14);
+		$this->assertEquals($tags, 15);
 		//tests if the call worked
-		$this->assertLessThan($tags, 0);
+		//$this->assertLessThan($tags, 0);
 	}
 
 	// public function test_getLyricsForSong(){
