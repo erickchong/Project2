@@ -114,18 +114,19 @@ final class WordCloudTest extends TestCase
 		//Arrange
 		$cloud = new WordCloud();
 		$name = "madan";
-		$library = new LibraryController;
-        $text = $library->combineKeywords($name, 10);
-
+		// $library = new LibraryController;
+  //       $text = $library->combineKeywords($name, 10);
+		$wordcloud = $cloud->WordCloudGenerator($name, 10);
 		//Act
         //$text = $cloud->getLyricsForArtist($name);
-        $words = str_word_count($text, 1);
-        $word_frequency = $cloud->word_freq($words);
-		$word_c = $cloud->word_cloud($word_frequency, $name);
-		$tags = $word_c[1];
+  //       $words = str_word_count($text, 1);
+  //       $word_frequency = $cloud->word_freq($words);
+		// $word_c = $cloud->word_cloud($word_frequency, $name);
+		// $tags = $word_c[1];
 
 		//Assert
-		//tests if the right number of tags come up 
+		//tests if the right number of tags come up
+		$tags = count($wordcloud); 
 		$this->assertEquals($tags, 15);
 		//tests if the call worked
 		//$this->assertLessThan($tags, 0);
