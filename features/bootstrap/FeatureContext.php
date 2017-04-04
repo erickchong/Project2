@@ -21,7 +21,6 @@ class FeatureContext implements Context
 	public $paperSearchBar;
 	public $paperSearchTextField;
     public $searchButton;
-    public $shareButton;
 
     public $searchTerm;
 
@@ -45,7 +44,6 @@ class FeatureContext implements Context
 		$this->paperSearchBar = $this->page->findById("inputBox");
 
         $this->searchButton = $this->page->findById("submitButton");
-        $this->shareButton = $this->page->findById("shareToFacebookButton");
 	}
 
 	public function __destruct()
@@ -77,14 +75,6 @@ class FeatureContext implements Context
     public function thereShouldBeASearchButton()
     {
         assertNotEquals(null, $this->searchButton);
-    }
-
-    /**
-     * @Then there should be a share button
-     */
-    public function thereShouldBeAShareButton()
-    {
-        assertNotEquals(null, $this->shareButton);
     }
 
 	/**
@@ -145,13 +135,28 @@ class FeatureContext implements Context
      */
     public function theWordCloudTitleShouldMatch()
     {
-        $artistitle = null;
-        while ($artistitle == null) {
-            sleep(1);
-            $artistitle = $this->page->findById("artist_title");
-        }
+        sleep(10);
+        $artistitle = $this->page->findById("author_title")->getText();
+        assertEquals(strtolower($this->searchTerm), strtolower($artistitle));
+    }
 
-        assertEquals(strtolower($this->searchTerm), strtolower($artistitle->getText()));
+    /**
+     * @Given that the name :arg1, which doesn't exist, is entered into the search bar
+     */
+    public function thatTheNameWhichDoesnTExistIsEnteredIntoTheSearchBar($arg1)
+    {
+        $this->searchTerm = $arg1;
+        $this->paperSearchBar->setValue($arg1);
+    }
+
+    /**
+     * @Then text saying :arg1 should appear on the screen
+     */
+    public function textSayingShouldAppearOnTheScreen($arg1)
+    {
+        sleep(6);
+        $text = $this->page->findById("cloudResult")->getText();
+        assertEquals($text, $arg1);
     }
 
 

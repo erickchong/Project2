@@ -7,4 +7,3 @@ Feature: Main page
 		Given the main page is loaded
 		Then the title of the page should be "NerdEngine"
 		And there should be a search button
-		And there should be a share button
