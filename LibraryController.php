@@ -108,17 +108,21 @@ class LibraryController {
 		$acmPapers = $libraryController->getACMPapersWithAuthor($author, $limit);
 		$ieeePapers = $libraryController->getIEEEPapersWithAuthor($author, $limit);
 		$keywords = "";
-		foreach($acmPapers as $paper){
-			$keystring = $paper["keywords"];
-			
-			$keywords = $keywords." ".$keystring;
+		if(count($acmPapers)==0 && count($ieeePapers)==0){
+
+		}else{
+			foreach($acmPapers as $paper){
+				$keystring = $paper["keywords"];
+				$keywords = $keywords." ".$keystring;
+			}
+			foreach($ieeePapers as $paper){
+				$keystring = $paper["keywords"];
+				$keywords = $keywords." ".$keystring;
+			}
+			//$keywords = $acmPapers["keywords"] . " " . $ieeePapers["keywords"];
+			$keywords = trim(preg_replace('/\s+/', ' ', $keywords)); // removes all unneccessary spaces and newlines
 		}
-		foreach($ieeePapers as $paper){
-			$keystring = $paper["keywords"];
-			$keywords = $keywords." ".$keystring;
-		}
-		//$keywords = $acmPapers["keywords"] . " " . $ieeePapers["keywords"];
-		$keywords = trim(preg_replace('/\s+/', ' ', $keywords)); // removes all unneccessary spaces and newlines
+		
 		return $keywords;
 		
 	}

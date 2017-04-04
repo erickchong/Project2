@@ -120,17 +120,22 @@ class WordCloud
         $provider = new WordCloud;
         $library = new LibraryController;
         $text = $library->combineKeywords($author, $limit);
-        //$text = $provider->getLyricsForArtist($artist_name);
-        $words = str_word_count($text, 1); /* Generate list of words */
-        $word_count = count($words); /* Word count */
-        $unique_words = count( array_unique($words) ); /* Unique word count */
-        $words_filtered = $provider->filter_words($words); /* Filter out stop words from the word list */
-        $word_frequency = $provider->word_freq($words); /* Build a word frequency list */
-        $word_c = $provider->word_cloud($word_frequency, $author); /* Generate a word cloud and get number of tags */
-        $word_cloud = $word_c[0]; /* The word cloud */
-        $tags = $word_c[1]; /* The number of tags in the word cloud*/
+        if($text == ""){
+            return "author not found !";
+        }else{
+            $words = str_word_count($text, 1); /* Generate list of words */
+            $word_count = count($words); /* Word count */
+            $unique_words = count( array_unique($words) ); /* Unique word count */
+            $words_filtered = $provider->filter_words($words); /* Filter out stop words from the word list */
+            $word_frequency = $provider->word_freq($words); /* Build a word frequency list */
+            $word_c = $provider->word_cloud($word_frequency, $author); /* Generate a word cloud and get number of tags */
+            $word_cloud = $word_c[0]; /* The word cloud */
+            $tags = $word_c[1]; /* The number of tags in the word cloud*/
 
-        return $word_cloud;
+            return $word_cloud;
+        }
+        //$text = $provider->getLyricsForArtist($artist_name);
+        
     }
 
     // function getSongsByWord($_word, $_artist){

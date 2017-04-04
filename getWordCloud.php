@@ -14,10 +14,10 @@ else{
 <html>
 
 <body>
-<div id="artist_title"><?php echo strtoupper($author)?></div>
+<div id="author_title"><?php echo strtoupper($author)?></div>
 <div id="cloudResult">
 <?php 
-	echo $cloud;
+echo $cloud;
 ?>
 </div>
 
