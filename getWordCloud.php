@@ -4,7 +4,7 @@ include 'WordCloud.php';
 if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST' && $_POST['name'] != '') {
 	$author = $_POST['name'];
 	$provider = new WordCloud;
-	$cloud = $provider->WordCloudGenerator($author, 100);
+	$cloud = $provider->WordCloudGenerator($author, 10);
 }
 else{
 	$cloud = null;
