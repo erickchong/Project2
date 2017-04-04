@@ -83,10 +83,16 @@ class LibraryController {
         	$paper["authors"] = $document->authors; //need to parse 
         	$paper["abstract"] = $document->abstract; 
         	$paper["keywords"]  = "";
-        	foreach($document->thesaurusterms->term as $keyword){
-        		$word = $keyword;
-        		$paper["keywords"]  =  $paper["keywords"]. " ". $word;	
+        	$count = count($document->thesaurusterms->term);
+        	
+        	for($a = 0; $a < $count; $a++){
+        		$word = $document->thesaurusterms->term[$a];
+        		$paper["keywords"]  =  $paper["keywords"]. " ". $word;
         	}
+        	// foreach($document->thesaurusterms->term as $keyword){
+        	// 	$word = $keyword;
+        	// 	$paper["keywords"]  =  $paper["keywords"]. " ". $word;	
+        	// }
 
         	$paper["pdfURL"] = $document->pdf;
         	$papers[] = $paper;
