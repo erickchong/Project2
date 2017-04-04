@@ -21,6 +21,9 @@ class FeatureContext implements Context
 	public $paperSearchBar;
 	public $paperSearchTextField;
     public $searchButton;
+    public $shareButton;
+
+    public $searchTerm;
 
 	/**
 	* Initializes context.
@@ -36,13 +39,13 @@ class FeatureContext implements Context
 
 		$this->session->start();
 
-		$this->session->visit('http://localhost:80/PaperCloud/');
+		$this->session->visit('http://localhost:80/Project2/');
 		$this->page = $this->session->getPage();
 
-		$this->paperSearchBar = $this->page->find("css", "#paperSearchBar");
-		$this->paperSearchTextField = $this->paperSearchBar->find("css", "#paperSearchTextField");
+		$this->paperSearchBar = $this->page->findById("inputBox");
 
-        $this->searchButton = $this->page->find("css", "#search");
+        $this->searchButton = $this->page->findById("submitButton");
+        $this->shareButton = $this->page->findById("shareToFacebookButton");
 	}
 
 	public function __destruct()
@@ -50,13 +53,46 @@ class FeatureContext implements Context
 		$this->session->stop();
 	}
 
+    /**
+     * @Given the main page is loaded
+     */
+    public function theMainPageIsLoaded()
+    {
+        assertNotEquals(null, $this->page);
+    }
+
+    /**
+     * @Then the title of the page should be :arg1
+     */
+    public function theTitleOfThePageShouldBe($arg1)
+    {
+        $title = $this->page->findById("header");
+        assertNotEquals(null, $title);
+        assertEquals($arg1, $title->getText());
+    }
+
+    /**
+     * @Then there should be a search button
+     */
+    public function thereShouldBeASearchButton()
+    {
+        assertNotEquals(null, $this->searchButton);
+    }
+
+    /**
+     * @Then there should be a share button
+     */
+    public function thereShouldBeAShareButton()
+    {
+        assertNotEquals(null, $this->shareButton);
+    }
+
 	/**
-	* @Given there is an paper search bar
+	* @Given there is a paper search bar
 	*/
-	public function thereIsAnpaperSearchBar()
+	public function thereIsAPaperSearchBar()
 	{
 		assertNotEquals(null, $this->paperSearchBar);
-		// $this->paperSearchBar = $this->page->find("css", "#paperSearchBar");
 	}
 
 	/**
@@ -65,101 +101,15 @@ class FeatureContext implements Context
 	public function thepaperSearchBarShouldBeEmpty()
 	{
 
-		assertEquals("", $this->paperSearchTextField->getValue());
+		assertEquals("", $this->paperSearchBar->getValue());
 	}
 
-	/**
-    * @Given there are more than three characters in the textbox
-    */
-    public function thereAreMoreThanThreeCharactersInTheTextbox()
-    {
-    	$this->paperSearchTextField->setValue('The Bea');
-        sleep(3);
-    }
-
-    public $suggestions;
-
     /**
-     * @Then the suggestions drop-down should be visible below the textbox
+     * @Given the surname :arg1 is entered into the search bar
      */
-    public function theSuggestionsDropDownShouldBeVisibleBelowTheTextbox()
+    public function theSurnameIsEnteredIntoTheSearchBar($arg1)
     {
-        $this->suggestions = $this->page->find("css", "#ui-id-1");
-        assertNotEquals(null, $this->suggestions);
-        assertTrue($this->suggestions->isVisible());
-    }
-
-    /**
-     * @Then there should be at least three papers in the drop-down
-     */
-    public function thereShouldBeAtLeastThreepapersInTheDropDown()
-    {
-        $this->suggestions->findall('css', 'li');
-
-        $i = 0;
-        foreach ($this->suggestions as $suggestion) {
-            ++$i;
-        }
-
-        assertGreaterThan($i, 2);
-    }
-
-    /**
-     * @Given an paper is chosen from the drop-down
-     */
-    public function anpaperIsChosenFromTheDropDown()
-    {
-        $this->paperSearchTextField->setValue('The Bea');
-        sleep(3);
-
-        $this->suggestions = $this->page->find("css", "#ui-id-1");
-        
-        $firstsuggestion = $this->suggestions->find('css', 'li');
-
-        $firstsuggestion->click();
-    }
-
-    /**
-     * @Then the textbox should be updated to contain the name of the paper
-     */
-    public function theTextboxShouldBeUpdatedToContainTheNameOfThepaper()
-    {
-        sleep(0.5);
-
-        assertEquals("The Beach Boys", $this->paperSearchTextField->getValue());
-    }
-
-    /**
-     * @Given the paper Search Bar has three or fewer characters
-     */
-    public function thepaperSearchBarHasThreeOrFewerCharacters()
-    {
-        $this->paperSearchTextField->setValue('the');
-    }
-
-    /**
-     * @Then the search button is not clickable
-     */
-    public function theSearchButtonIsNotClickable()
-    {
-        assertEquals('disabled', $this->searchButton->getAttribute('disabled'));
-    }
-
-    /**
-     * @Given the paper Search Bar has more than three characters
-     */
-    public function thepaperSearchBarHasMoreThanThreeCharacters()
-    {
-        $this->paperSearchTextField->setValue('the ');
-        sleep(3);
-    }
-
-    /**
-     * @Then the search button is clickable
-     */
-    public function theSearchButtonIsClickable()
-    {
-        assertEquals(null, $this->searchButton->getAttribute('disabled'));
+        $this->paperSearchBar->setValue($arg1);
     }
 
     /**
@@ -167,24 +117,42 @@ class FeatureContext implements Context
      */
     public function theSearchButtonIsClicked()
     {
-        $this->paperSearchTextField->setValue('The Beach Boys');
-
-        sleep(1.5);
-
-        $this->suggestions = $this->page->find("css", "#ui-id-1");
-        $firstsuggestion = $this->suggestions->find('css', 'li');
-        $firstsuggestion->click();
-
         $this->searchButton->click();
-
-        sleep(2);
     }
 
     /**
-     * @Then we should be navigated to the Word Cloud Page for the paper
+     * @Then a word cloud should be generated within :arg1 seconds
      */
-    public function weShouldBeNavigatedToTheWordCloudPageForThepaper()
+    public function aWordCloudShouldBeGeneratedWithinSeconds($arg1)
     {
-        assertNotEquals(null, $this->page->find("css", "#wordCloudPage"));
+        sleep($arg1);
+        $wordcloud = $this->page->find("css", "#cloudBox");
+        assertNotEquals(null, $wordcloud);
     }
+
+    /**
+     * @Given the search term was :arg1
+     */
+    public function theSearchTermWas($arg1)
+    {
+        $this->searchTerm = $arg1;
+        $this->paperSearchBar->setValue($arg1);
+        $this->searchButton->click();
+    }
+
+    /**
+     * @Then the word cloud title should match
+     */
+    public function theWordCloudTitleShouldMatch()
+    {
+        $artistitle = null;
+        while ($artistitle == null) {
+            sleep(1);
+            $artistitle = $this->page->findById("artist_title");
+        }
+
+        assertEquals(strtolower($this->searchTerm), strtolower($artistitle->getText()));
+    }
+
+
 }
