@@ -68,6 +68,54 @@ class LibraryController {
 		
 		return $papers;
 	}
+	
+	function getACMPapersWithWord($word, $limit)
+	{
+		$papers = array();
+
+		$acmURL = 'http://dl.acm.org/exportformats_search.cfm?query=' .rawurlencode($word). '&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv';
+		$acmCSV = file_get_contents($acmURL); // this request is a bottleneck
+
+		$lines = $this->parseCSV($acmCSV);
+		
+		foreach ($lines as $line) {
+			$paper = array();
+			
+			$paper["source"] = "acm";
+			
+			// Query the paper title
+			$paper["title"] = $line["title"];
+			
+			// Query the paper authors
+			// TODO: Need to parse author names when multiple authors are present
+			$paper["authors"] = $line["author"];
+			
+			// Query the paper publication name
+			$paper["publication"] = $line["booktitle"];
+			
+			// Derive the full text URL name from the ID
+			$paper["pdfURL"] = "http://dl.acm.org/ft_gateway.cfm?id=" . $line["id"];
+			
+			// Query the paper abstract
+			$paper["abstract"] = "";
+			
+			$line["keywords"] = str_replace(",", "",$line["keywords"]); //remove commas
+			$line["keywords"] = strtolower($line["keywords"]); //convert to lower case
+			
+			// Query the keyword terms
+			$paper["keywords"] = $line["keywords"];
+			
+			$papers[] = $paper;
+			
+			if (count($papers) == $limit)
+			{
+				break;
+			}
+		}
+		
+		return $papers;
+	}
+	
 	function getIEEEPapersWithAuthor($name, $limit)
 	{	
 		$papers = array();
