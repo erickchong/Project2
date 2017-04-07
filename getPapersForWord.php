@@ -2,10 +2,11 @@
 include 'WordCloud.php';
 
 
-$artist = $_GET['artist'];
+$artist = $_GET['author'];
 $word = $_GET['word'];
-$provider = new WordCloud;
-$song_list = $provider->getSongsByWord($word, $artist);
+$limit = $_GET['limit'];
+$provider = new LibraryController;
+$paper_list = $provider->combinePapers($word, $limit);
 ?>
 
 <html>
