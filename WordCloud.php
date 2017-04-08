@@ -33,7 +33,7 @@ class WordCloud
     }
    
     /* Builds the word cloud and returns a string containing a div of the word cloud. */
-    function word_cloud($words, $name) {
+    function word_cloud($words, $name, $limit) {
         $tags = 0;
         $cloud = "<div id=\"innerCloud\">";
         
@@ -66,7 +66,7 @@ class WordCloud
             }
             
             if ($font_size >= $fmin) {
-                $cloud .= "<a href=\"getSongsForWord.php?artist={$name}&word={$word}\" style=\"font-size: {$font_size}px; color: $color;\">$word</a> ";
+                $cloud .= "<a href=\"getPapersForWord.php?author={$name}&word={$word}&limit={$limit}\" style=\"font-size: {$font_size}px; color: $color;\">$word</a> ";
                 $tags++;
             }
         }
@@ -128,7 +128,7 @@ class WordCloud
             $unique_words = count( array_unique($words) ); /* Unique word count */
             $words_filtered = $provider->filter_words($words); /* Filter out stop words from the word list */
             $word_frequency = $provider->word_freq($words); /* Build a word frequency list */
-            $word_c = $provider->word_cloud($word_frequency, $author); /* Generate a word cloud and get number of tags */
+            $word_c = $provider->word_cloud($word_frequency, $author, $limit); /* Generate a word cloud and get number of tags */
             $word_cloud = $word_c[0]; /* The word cloud */
             $tags = $word_c[1]; /* The number of tags in the word cloud*/
 
