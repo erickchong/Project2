@@ -3,15 +3,18 @@ require_once("LibraryController.php");
 
 $libraryController = new LibraryController();
 $acmPapers = array();
-$acmPapers = $libraryController->getACMPapersWithWord("aluminum", 10);
+$acmPapers = $libraryController->getACMPapersWithWord("aluminum", 20);
 $numPapers = count($acmPapers);
 
 foreach ($acmPapers as $paper)
 {
-	$author = $paper["authors"];
-	echo "$author \n";
-	$words = $paper["keywords"];
-	echo "$words \n";
+	$authors = $libraryController->parseAuthors($paper["authors"]);
+	echo "Paper: \n";
+	foreach ($authors as $author)
+	{
+		echo "$author \n";
+	}
+	
 }
 
 
