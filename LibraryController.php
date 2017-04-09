@@ -70,7 +70,7 @@ class LibraryController {
 		$papers = array();
 
 		$acmURL = 'http://dl.acm.org/exportformats_search.cfm?query=persons%2Eauthors%2EpersonName%3A%28%252B' . urlencode($name) . '%29&srt=%5Fscore&expformat=csv';
-		$acmCSV = file_get_contents($acmURL); // this request is a bottleneck
+		$acmCSV = file_get_contents($acmURL);
 
 		$lines = $this->parseCSV($acmCSV);
 		
@@ -117,7 +117,7 @@ class LibraryController {
 		$papers = array();
 
 		$acmURL = 'http://dl.acm.org/exportformats_search.cfm?query=' .rawurlencode($word). '&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv';
-		$acmCSV = file_get_contents($acmURL); // this request is a bottleneck
+		$acmCSV = file_get_contents($acmURL);
 
 		$lines = $this->parseCSV($acmCSV);
 		
@@ -220,7 +220,11 @@ class LibraryController {
         	$papers[] = $paper;
 
         }
-		
+        // Added the if statement to deal with 2 extraneous "papers" (xml parsing problem?)
+        if (count($papers) > 2)
+        {
+        	$papers = array_slice($papers, 2, count($papers));
+        }
 		return $papers;
 	}
 	
@@ -254,14 +258,15 @@ class LibraryController {
 		$acmPapers = $libraryController->getACMPapersWithWord($word, $limit);
 		$ieeePapers = $libraryController->getIEEEPapersWithWord($word, $limit);
 		$papers = array_merge($acmPapers, $ieeePapers);
+		$numPapers = count($papers);
+		echo "Initial amount of papers: $numPapers \n";
 		
-		//if (count())
-		
-		
+		if (count($papers > $limit))
+		{
+			shuffle($papers); // Randomize order of papers
+			$papers = array_slice($papers, 0, $limit); // Get only the first $limit papers
+		}
 		return $papers;
-		
-		
 	}
-	
 }
 ?>
