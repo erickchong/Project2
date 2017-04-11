@@ -2,7 +2,7 @@
 include 'WordCloud.php';
 
 
-$artist = $_GET['author'];
+$author = $_GET['author'];
 $word = $_GET['word'];
 $limit = $_GET['limit'];
 $provider = new LibraryController;
@@ -11,41 +11,36 @@ $paper_list = $provider->combinePapers($word, $limit);
 
 <html>
 <head>
-<link rel="stylesheet" href="./dist/css/songs-page.css">
+<link rel="stylesheet" href="./css/papers-page.css">
 </head>
 <header>
 	<div id="header"><?php echo strtoupper($word)?></div>
 </header>
 <body>
 	<?php 
-		echo "<center><table border=1>
+		echo "<center><table border=0 style=\"width: 100%; height: 100%;\">
         <tr>
-        <td>Paper</td>
-        <td>Author List</td>
-        <td>Conference Name</td>
+        <td class = \"td1\" align=\"center\">Paper</td>
+        <td class = \"td1\" align=\"center\">Author List</td>
+        <td class = \"td1\" align=\"center\">Conference Name</td>
         </tr>";
 		for($x = 0; $x < count($paper_list); $x++){
+			$title_is = $paper_list[$x]['title'];
 			echo "<tr>"
-			."<td width='180px' height='200px'>".$paper_list[$x]["tilte"]."</td>"
-			."<td width='180px' height='200px'>";
+			."<td class = \"td1\" align=\"center\">".$title_is."</td>"
+			."<td class = \"td1\" align=\"center\">";
 			$author_array = $paper_list[$x]["authors"];
 			for($y = 0; $y < count($author_array); $y++){
-				echo $author_array[$y];
+				$author_is = $author_array[$y];
+				echo "<a href=\"getWordCloudForAuthor.php?author={$author_is}&limit={$limit}\">$author_is</a> \n "	;
 			}
 			echo "</td>"
-			."<td width='180px' height='200px'> conference name </td>"
+			."<td class = \"td1\" align=\"center\"> conference name </td>"
 			."</tr>";
 		}
 
 		echo "</table>"
 		."</center>";
-
-	  //       $track_id = $song_list[$x];
-	  //       //echo "track_id is ".$track_id;
-	  //       $song_title = $provider->getSongByTrackID($track_id);
-	  //       //echo "song_title is ".$song_title;
-			// echo "<div id=\"songLink\"><a href=\"getLyricsForSong.php?artist={$artist}&track_id={$track_id}&word={$word}\">$song_title</a></div>";
-		//}
 	?>
 <a href="index.html"><button id="back">Back</button></a>
 </body>

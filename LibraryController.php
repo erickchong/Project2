@@ -131,7 +131,8 @@ class LibraryController {
 			
 			// Query the paper authors
 			// TODO: Need to parse author names when multiple authors are present
-			$paper["authors"] = $line["author"];
+			$abc = $line["author"];
+			$paper["authors"] = $this->parseAuthors($abc);
 			
 			// Query the paper publication name
 			$paper["publication"] = $line["booktitle"];
@@ -170,6 +171,7 @@ class LibraryController {
         $documents = simplexml_load_string($response);
         foreach($documents as $document){
         	$paper = array();
+        	$paper["source"] = "ieee";
         	$paper["title"] = $document->title[0]; 
         	$paper["authors"] = $document->authors; //need to parse 
         	$paper["abstract"] = $document->abstract; 
@@ -201,8 +203,11 @@ class LibraryController {
         $documents = simplexml_load_string($response);
         foreach($documents as $document){
         	$paper = array();
+        	$paper["source"] = "ieee";
         	$paper["title"] = $document->title[0]; 
-        	$paper["authors"] = $document->authors; //need to parse 
+        	//$paper["authors"] = $document->authors; 
+        	$abc = $document->authors;
+			$paper["authors"] = $this->parseAuthors($abc);//need to parse 
         	$paper["abstract"] = $document->abstract; 
         	$paper["keywords"]  = "";
         	$count = count($document->thesaurusterms->term);
@@ -259,13 +264,16 @@ class LibraryController {
 		$ieeePapers = $libraryController->getIEEEPapersWithWord($word, $limit);
 		$papers = array_merge($acmPapers, $ieeePapers);
 		$numPapers = count($papers);
-		echo "Initial amount of papers: $numPapers \n";
-		
+		//echo "Initial amount of papers: $numPapers \n";
 		if (count($papers > $limit))
 		{
 			shuffle($papers); // Randomize order of papers
 			$papers = array_slice($papers, 0, $limit); // Get only the first $limit papers
 		}
+		$cnt = count($papers);
+		// for($x = 0; $x < $cnt; $x++){
+		// 	echo $x. " : ".$papers[$x]['title']." \n ";
+		// }
 		return $papers;
 	}
 }
