@@ -26,7 +26,7 @@ $paper_list = $provider->combinePapers($word, $limit);
         </tr>";
 		for($x = 0; $x < count($paper_list); $x++){
 			echo "<tr>"
-			."<td width='180px' height='200px'>".$paper_list[$x]["tilte"]."</td>";
+			."<td width='180px' height='200px'>".$paper_list[$x]["tilte"]."</td>"
 			."<td width='180px' height='200px'>";
 			$author_array = $paper_list[$x]["authors"];
 			for($y = 0; $y < count($author_array); $y++){
