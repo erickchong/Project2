@@ -31,6 +31,26 @@ class LibraryControllerTest extends TestCase
 		}
 	}
 
+	public function testGetACMPapersWithWord()
+	{
+
+		$word = "analysis";
+		$limit = 10;
+		$acmPapers = array();
+		$acmPapers = $this->libraryController->getACMPapersWithAuthor($word, $limit);
+
+		$this->assertGreaterThan(0, count($acmPapers));
+		$this->assertLessThanOrEqual($limit, count($acmPapers));
+
+		foreach ($acmPapers as $paper)
+		{
+			$author = $paper["authors"];
+			$this->assertGreaterThan(0, strlen((string)$author));
+			$this->assertEquals("acm", $paper["source"]);
+		}
+
+	}
+
 	public function testGetIEEEPapersWithAuthor()
 	{
 		$authorName = "Saito";
@@ -64,6 +84,8 @@ class LibraryControllerTest extends TestCase
 
 		$this->assertGreaterThan(0, count($keywords));
 	}
+
+
 }
 
 

@@ -22,12 +22,55 @@ class LibraryController {
 	}
 	
 	
+	
+	// $authors should be a string of author names
+	public function parseAuthors($authors)
+	{	
+		$result = array();
+		$authors = (string)$authors;
+		$authors = html_entity_decode(htmlentities($authors));
+		$authors = trim(preg_replace('/\s+/', ' ', $authors)); // removes all unneccessary spaces and newlines
+		$authors = str_replace(" and ", "; ", $authors); // Done to help parse ACM authors
+		$builder = "";
+		$readAuthor = false;
+		
+		//echo "$authors \n";
+		for ($i = 0; $i < strlen($authors); $i++)
+		{
+			//$builder .= $authors;
+			//echo "$builder \n";
+			if (substr($authors, $i, 2) == "; " || $i == strlen($authors) - 1)
+			{
+				//echo "In first else \n";
+				if ((substr($authors, $i, 1) != ";" && substr($authors, $i, 1) != " ") || $i == strlen($authors) - 1)
+				{
+					$builder .= substr($authors, $i, 1);
+				}
+				$result[] = $builder;
+				$builder = "";
+				$readAuthor = false;
+			}
+			else if ($readAuthor == true)
+			{
+				//echo "In 2nd else \n";
+				$builder .= substr($authors, $i, 1);
+			}
+			else if ($readAuthor == false && substr($authors, $i, 1) != " ")
+			{
+				//echo "In 3rd else \n";
+				$builder .= substr($authors, $i, 1);
+				$readAuthor = true;
+			}
+		}
+		return $result;
+	}
+	
 	function getACMPapersWithAuthor($name, $limit)
 	{	
 		$papers = array();
 
 		$acmURL = 'http://dl.acm.org/exportformats_search.cfm?query=persons%2Eauthors%2EpersonName%3A%28%252B' . urlencode($name) . '%29&srt=%5Fscore&expformat=csv';
-		$acmCSV = file_get_contents($acmURL); // this request is a bottleneck
+		$acmCSV = file_get_contents($acmURL);
 
 		$lines = $this->parseCSV($acmCSV);
 		
@@ -68,6 +111,54 @@ class LibraryController {
 		
 		return $papers;
 	}
+	
+	function getACMPapersWithWord($word, $limit)
+	{
+		$papers = array();
+
+		$acmURL = 'http://dl.acm.org/exportformats_search.cfm?query=' .rawurlencode($word). '&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv';
+		$acmCSV = file_get_contents($acmURL);
+
+		$lines = $this->parseCSV($acmCSV);
+		
+		foreach ($lines as $line) {
+			$paper = array();
+			
+			$paper["source"] = "acm";
+			
+			// Query the paper title
+			$paper["title"] = $line["title"];
+			
+			// Query the paper authors
+			// TODO: Need to parse author names when multiple authors are present
+			$paper["authors"] = $line["author"];
+			
+			// Query the paper publication name
+			$paper["publication"] = $line["booktitle"];
+			
+			// Derive the full text URL name from the ID
+			$paper["pdfURL"] = "http://dl.acm.org/ft_gateway.cfm?id=" . $line["id"];
+			
+			// Query the paper abstract
+			$paper["abstract"] = "";
+			
+			$line["keywords"] = str_replace(",", "",$line["keywords"]); //remove commas
+			$line["keywords"] = strtolower($line["keywords"]); //convert to lower case
+			
+			// Query the keyword terms
+			$paper["keywords"] = $line["keywords"];
+			
+			$papers[] = $paper;
+			
+			if (count($papers) == $limit)
+			{
+				break;
+			}
+		}
+		
+		return $papers;
+	}
+	
 	function getIEEEPapersWithAuthor($name, $limit)
 	{	
 		$papers = array();
@@ -102,6 +193,41 @@ class LibraryController {
 		return $papers;
 	}
 	
+	function getIEEEPapersWithWord($word, $limit)
+	{	
+		$papers = array();
+		$ieeeURL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?thsrsterms=' .rawurlencode($word). '&hc=' .rawurlencode($limit);
+        $response = file_get_contents($ieeeURL);
+        $documents = simplexml_load_string($response);
+        foreach($documents as $document){
+        	$paper = array();
+        	$paper["title"] = $document->title[0]; 
+        	$paper["authors"] = $document->authors; //need to parse 
+        	$paper["abstract"] = $document->abstract; 
+        	$paper["keywords"]  = "";
+        	$count = count($document->thesaurusterms->term);
+        	
+        	for($a = 0; $a < $count; $a++){
+        		$word = $document->thesaurusterms->term[$a];
+        		$paper["keywords"]  =  $paper["keywords"]. " ". $word;
+        	}
+        	// foreach($document->thesaurusterms->term as $keyword){
+        	// 	$word = $keyword;
+        	// 	$paper["keywords"]  =  $paper["keywords"]. " ". $word;	
+        	// }
+
+        	$paper["pdfURL"] = $document->pdf;
+        	$papers[] = $paper;
+
+        }
+        // Added the if statement to deal with 2 extraneous "papers" (xml parsing problem?)
+        if (count($papers) > 2)
+        {
+        	$papers = array_slice($papers, 2, count($papers));
+        }
+		return $papers;
+	}
+	
 	function combineKeywords($author, $limit)
 	{
 		$libraryController = new LibraryController();
@@ -124,9 +250,23 @@ class LibraryController {
 		}
 		
 		return $keywords;
-		
 	}
 	
-	
+	function combinePapers($word, $limit)
+	{
+		$libraryController = new LibraryController();
+		$acmPapers = $libraryController->getACMPapersWithWord($word, $limit);
+		$ieeePapers = $libraryController->getIEEEPapersWithWord($word, $limit);
+		$papers = array_merge($acmPapers, $ieeePapers);
+		$numPapers = count($papers);
+		echo "Initial amount of papers: $numPapers \n";
+		
+		if (count($papers > $limit))
+		{
+			shuffle($papers); // Randomize order of papers
+			$papers = array_slice($papers, 0, $limit); // Get only the first $limit papers
+		}
+		return $papers;
+	}
 }
 ?>
