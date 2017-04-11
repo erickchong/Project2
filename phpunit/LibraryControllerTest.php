@@ -33,11 +33,10 @@ class LibraryControllerTest extends TestCase
 
 	public function testGetACMPapersWithWord()
 	{
-
 		$word = "analysis";
 		$limit = 10;
 		$acmPapers = array();
-		$acmPapers = $this->libraryController->getACMPapersWithAuthor($word, $limit);
+		$acmPapers = $this->libraryController->getACMPapersWithWord($word, $limit);
 
 		$this->assertGreaterThan(0, count($acmPapers));
 		$this->assertLessThanOrEqual($limit, count($acmPapers));
@@ -73,6 +72,24 @@ class LibraryControllerTest extends TestCase
 		$this->assertGreaterThan(0, $numPapers);
 		$this->assertLessThanOrEqual($limit, $numPapers);
 		
+	}
+
+	public function testGetIEEEPapersWithWord()
+	{
+		$word = "analysis";
+		$limit = 10;
+		$ieeePapers = array();
+		$ieeePapers = $this->libraryController->getIEEEPapersWithWord($word, $limit);
+
+		$this->assertGreaterThan(0, count($ieeePapers));
+		$this->assertLessThanOrEqual($limit, count($ieeePapers));
+
+		foreach ($ieeePapers as $paper)
+		{
+			$author = $paper["authors"];
+			$this->assertGreaterThan(0, strlen((string)$author));
+			//$this->assertEquals("acm", $paper["source"]);
+		}
 	}
 
 	public function testCombineKeywords()
