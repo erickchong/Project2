@@ -188,6 +188,7 @@ class LibraryController {
         	// }
 
         	$paper["pdfURL"] = $document->pdf;
+        	$paper["publication"] = $document->pubtitle;
         	$papers[] = $paper;
 
         }
@@ -222,6 +223,7 @@ class LibraryController {
         	// }
 
         	$paper["pdfURL"] = $document->pdf;
+        	$paper["publication"] = $document->pubtitle;
         	$papers[] = $paper;
 
         }

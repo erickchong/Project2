@@ -26,16 +26,19 @@ $paper_list = $provider->combinePapers($word, $limit);
         </tr>";
 		for($x = 0; $x < count($paper_list); $x++){
 			$title_is = $paper_list[$x]['title'];
+			$source_is = $paper_list[$x]['source'];
 			echo "<tr>"
-			."<td class = \"td1\" align=\"center\">".$title_is."</td>"
+			."<td class = \"td1\" align=\"center\">".$source_is. "   :   ".$title_is."</td>"
 			."<td class = \"td1\" align=\"center\">";
 			$author_array = $paper_list[$x]["authors"];
 			for($y = 0; $y < count($author_array); $y++){
 				$author_is = $author_array[$y];
 				echo "<a href=\"getWordCloudForAuthor.php?author={$author_is}&limit={$limit}\">$author_is</a> \n "	;
 			}
+			$conf_is = $paper_list[$x]['publication'];
+			
 			echo "</td>"
-			."<td class = \"td1\" align=\"center\"> conference name </td>"
+			."<td class = \"td1\" align=\"center\"> $conf_is </td>"
 			."</tr>";
 		}
 
