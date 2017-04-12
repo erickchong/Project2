@@ -95,10 +95,11 @@ class FeatureContext implements Context
 	}
 
     /**
-     * @Given the surname :arg1 is entered into the search bar
+     * @Given the name :arg1 is entered into the search bar
      */
-    public function theSurnameIsEnteredIntoTheSearchBar($arg1)
+    public function theNameIsEnteredIntoTheSearchBar($arg1)
     {
+        $this->searchTerm = $arg1;
         $this->paperSearchBar->setValue($arg1);
     }
 
@@ -120,15 +121,15 @@ class FeatureContext implements Context
         assertNotEquals(null, $wordcloud);
     }
 
-    /**
-     * @Given the search term was :arg1
-     */
-    public function theSearchTermWas($arg1)
-    {
-        $this->searchTerm = $arg1;
-        $this->paperSearchBar->setValue($arg1);
-        $this->searchButton->click();
-    }
+    // /**
+    //  * @Given the search term was :arg1
+    //  */
+    // public function theSearchTermWas($arg1)
+    // {
+    //     $this->searchTerm = $arg1;
+    //     $this->paperSearchBar->setValue($arg1);
+    //     $this->searchButton->click();
+    // }
 
     /**
      * @Then the word cloud title should match
@@ -138,15 +139,6 @@ class FeatureContext implements Context
         sleep(10);
         $artistitle = $this->page->findById("author_title")->getText();
         assertEquals(strtolower($this->searchTerm), strtolower($artistitle));
-    }
-
-    /**
-     * @Given that the name :arg1, which doesn't exist, is entered into the search bar
-     */
-    public function thatTheNameWhichDoesnTExistIsEnteredIntoTheSearchBar($arg1)
-    {
-        $this->searchTerm = $arg1;
-        $this->paperSearchBar->setValue($arg1);
     }
 
     /**
@@ -160,4 +152,100 @@ class FeatureContext implements Context
     }
 
 
+
+    /**
+     * @Given the word :arg1 is clicked in the cloud
+     */
+    public function theWordIsClickedInTheCloud($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then each paper in the list should have a pdf link
+     */
+    public function eachPaperInTheListShouldHaveAPdfLink()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then each paper in the list should have a bibtex link
+     */
+    public function eachPaperInTheListShouldHaveABibtexLink()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then clicking the title of each paper in the list should download a PDF and load the abstract
+     */
+    public function clickingTheTitleOfEachPaperInTheListShouldDownloadAPdfAndLoadTheAbstract()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the user should be able to select a subset of the papers
+     */
+    public function theUserShouldBeAbleToSelectASubsetOfThePapers()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then a new word cloud should be generated
+     */
+    public function aNewWordCloudShouldBeGenerated()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given the name :arg1 is clicked from the author list
+     */
+    public function theNameIsClickedFromTheAuthorList($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the word cloud should contain the words :arg1
+     */
+    public function theWordCloudShouldContainTheWords($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then a list of papers containing the word :arg1 should be loaded
+     */
+    public function aListOfPapersContainingTheWordShouldBeLoaded($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the user should be able to download an image of the word cloud
+     */
+    public function theUserShouldBeAbleToDownloadAnImageOfTheWordCloud()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given the conference :arg1 is clicked
+     */
+    public function theConferenceIsClicked($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then a list of papers from :arg1 should be loaded
+     */
+    public function aListOfPapersFromShouldBeLoaded($arg1)
+    {
+        throw new PendingException();
+    }
 }
