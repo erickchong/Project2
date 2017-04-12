@@ -1,4 +1,5 @@
 <?php
+ini_set('max_execution_time', 300);
 
 class LibraryController {
 	
@@ -159,6 +160,14 @@ class LibraryController {
 		
 		return $papers;
 	}
+
+	function getACMPapersWithConference($conference, $limit){
+
+	}
+
+	function getACMAbstract($title){
+		
+	}
 	
 	function getIEEEPapersWithAuthor($name, $limit)
 	{	
@@ -182,17 +191,17 @@ class LibraryController {
         		$word = $document->thesaurusterms->term[$a];
         		$paper["keywords"]  =  $paper["keywords"]. " ". $word;
         	}
-        	// foreach($document->thesaurusterms->term as $keyword){
-        	// 	$word = $keyword;
-        	// 	$paper["keywords"]  =  $paper["keywords"]. " ". $word;	
-        	// }
 
         	$paper["pdfURL"] = $document->pdf;
         	$paper["publication"] = $document->pubtitle;
         	$papers[] = $paper;
 
         }
-		
+        // Added the if statement to deal with 2 extraneous "papers" (xml parsing problem?)
+		if (count($papers) > 2)
+        {
+        	$papers = array_slice($papers, 2, count($papers));
+        }
 		return $papers;
 	}
 	
@@ -206,7 +215,7 @@ class LibraryController {
         	$paper = array();
         	$paper["source"] = "ieee";
         	$paper["title"] = $document->title[0]; 
-        	//$paper["authors"] = $document->authors; 
+        	
         	$abc = $document->authors;
 			$paper["authors"] = $this->parseAuthors($abc);//need to parse 
         	$paper["abstract"] = $document->abstract; 
@@ -217,11 +226,7 @@ class LibraryController {
         		$word = $document->thesaurusterms->term[$a];
         		$paper["keywords"]  =  $paper["keywords"]. " ". $word;
         	}
-        	// foreach($document->thesaurusterms->term as $keyword){
-        	// 	$word = $keyword;
-        	// 	$paper["keywords"]  =  $paper["keywords"]. " ". $word;	
-        	// }
-
+        	
         	$paper["pdfURL"] = $document->pdf;
         	$paper["publication"] = $document->pubtitle;
         	$papers[] = $paper;
@@ -233,6 +238,53 @@ class LibraryController {
         	$papers = array_slice($papers, 2, count($papers));
         }
 		return $papers;
+	}
+
+	function getIEEEPapersWithConference($conference, $limit){
+		$papers = array();
+		$ieeeURL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?jn=' .rawurlencode($conference). '&hc=' .rawurlencode($limit);
+        $response = file_get_contents($ieeeURL);
+        $documents = simplexml_load_string($response);
+        foreach($documents as $document){
+        	$paper = array();
+        	$paper["source"] = "ieee";
+        	$paper["title"] = $document->title[0]; 
+        	
+        	$abc = $document->authors;
+			$paper["authors"] = $this->parseAuthors($abc);//need to parse 
+        	$paper["abstract"] = $document->abstract; 
+        	$paper["keywords"]  = "";
+        	$count = count($document->thesaurusterms->term);
+        	
+        	for($a = 0; $a < $count; $a++){
+        		$word = $document->thesaurusterms->term[$a];
+        		$paper["keywords"]  =  $paper["keywords"]. " ". $word;
+        	}
+        	
+        	$paper["pdfURL"] = $document->pdf;
+        	$paper["publication"] = $document->pubtitle;
+        	$papers[] = $paper;
+
+        }
+        // Added the if statement to deal with 2 extraneous "papers" (xml parsing problem?)
+        if (count($papers) > 2)
+        {
+        	$papers = array_slice($papers, 2, count($papers));
+        }
+		return $papers;
+	}
+
+	function getIEEEAbstract($title){
+
+		$ieeeURL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?ti=' .rawurlencode($title);
+        $response = file_get_contents($ieeeURL);
+        $documents = simplexml_load_string($response);
+        $abstract_is = "";
+        foreach($documents as $document){
+        	$abstract_is = $document->abstract;
+        }
+        
+		return $abstract_is;
 	}
 	
 	function combineKeywords($author, $limit)
@@ -277,6 +329,32 @@ class LibraryController {
 		// 	echo $x. " : ".$papers[$x]['title']." \n ";
 		// }
 		return $papers;
+	}
+
+	function getPapersForConference($conference, $source, $limit)
+	{
+		$libraryController = new LibraryController();
+		$papers = array();
+		if($source=='acm'){
+			$papers = $libraryController->getACMPapersWithConference($conference, $limit);
+		}else{
+			$papers = $libraryController->getIEEEPapersWithConference($conference, $limit);
+		}
+
+		return $papers;
+	}
+
+	function getAbstractForPaper($title, $source)
+	{
+		$libraryController = new LibraryController();
+		$abstract = "";
+		if($source=='acm'){
+			$abstract = $libraryController->getACMAbstract($title);
+		}else{
+			$abstract = $libraryController->getIEEEAbstract($title);
+		}
+	
+		return $abstract;
 	}
 }
 ?>

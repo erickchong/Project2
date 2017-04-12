@@ -1,0 +1,33 @@
+#header {
+	font-size: 50px;
+	text-align: center;
+	font-family: Lucida Console;
+	padding-bottom: 20px;
+	color: #f2f2f2;
+
+}
+
+body {
+  	padding-top: 15px;
+  	
+  	background: #2C3E50; /* For browsers that do not support gradients */
+	background: -webkit-linear-gradient(#2C3E50, #FD746C); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(#2C3E50, #FD746C); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(#2C3E50, #FD746C); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(#2C3E50, #FD746C); /* Standard syntax */
+  	font-family: Lucida Console;
+}
+
+.highlight {
+    background: yellow;
+}
+
+#abstract {
+	margin: 0 auto;
+	width: 800px;
+	text-align: center;
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+
+

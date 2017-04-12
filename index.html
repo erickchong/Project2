@@ -21,6 +21,7 @@
   
     <div id ="inputPane">
       <input id="inputBox" type="text" name="text" placeholder="Input Author Name">
+      <input id="limitBox" type="text" name="text" placeholder="Input Paper Limit">
       <div id="buttons">
         <button id="submitButton" class="btn btn-default">Search</button>
         <button id="shareToFacebookButton" class="btn btn-default" >Share to Facebook</button>
@@ -64,7 +65,8 @@
         url: "getWordCloud.php",
         data: {
           prev: '',
-          name: $('#inputBox').val()
+          name: $('#inputBox').val(),
+          limit: $('#limitBox').val()
         },
         success: function(msg){
           $('#cloudBox').html(msg);

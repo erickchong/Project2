@@ -1,10 +1,11 @@
 <?php
 include 'WordCloud.php';
 
-if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST' && $_POST['name'] != '') {
+if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST' && $_POST['name'] != '' && $_POST['limit'] != '') {
 	$author = $_POST['name'];
+	$limit = $_POST['limit'];
 	$provider = new WordCloud;
-	$cloud = $provider->WordCloudGenerator($author, 10);
+	$cloud = $provider->WordCloudGenerator($author, $limit);
 }
 else{
 	$cloud = null;

@@ -9,7 +9,7 @@
 
 body {
   	padding-top: 15px;
-  	
+  	color: #333;
   	background: #2C3E50; /* For browsers that do not support gradients */
 	 background: -webkit-linear-gradient(#2C3E50, #FD746C); /* For Safari 5.1 to 6.0 */
 	 background: -o-linear-gradient(#2C3E50, #FD746C); /* For Opera 11.1 to 12.0 */
