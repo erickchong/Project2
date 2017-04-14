@@ -82,27 +82,15 @@ body {
 	color: #F2F2F2;
 	border: none;
 }
-	
 
-#addMoreButton {
+#imageButton {
 	visibility: hidden;
-	float: left;
-	background: purple;
-	font-family: futura;
+	float: center;
+	background: #2C3E50;
+	font-family: Lucida Console;
 	font-size: 20px;
-	margin-left: 8px;
-	color: white;
-	border: none;
-	
-}
-
-#shareToFacebookButton {
-	visibility: hidden;
-	float: left;
-	background: purple;
-	font-family: futura;
-	font-size: 20px;
-	margin-left: 8px;
-	color: white;
+	margin-left: 240px;
+	color: #F2F2F2;
 	border: none;
 }
+	

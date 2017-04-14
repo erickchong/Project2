@@ -13,7 +13,6 @@ else{
 ?>
 
 <html>
-
 <body>
 <div id="author_title"><?php echo strtoupper($author)?></div>
 <div id="cloudResult">

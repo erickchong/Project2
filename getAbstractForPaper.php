@@ -13,10 +13,11 @@ $abstract = preg_replace("/\w*?".preg_quote($word)."\w*/i", "<span class='highli
 <html>
 <head>
 <link rel="stylesheet" href="./css/abstract-page.css">
-</head>
 <header>
 	<div id="header"><?php echo $title ?></div>
 </header>
+</head>
+
 <body>
 	<div id="abstract">
 		<?php echo $abstract ?>
