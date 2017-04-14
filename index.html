@@ -9,6 +9,7 @@
 <script type="text/javascript" src="./js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="./js/ajax.js"></script>
 <script type="text/javascript" src="./js/fb-ui-share.js"></script>
+<script type="text/javascript" src="./js/html2canvas.js"></script>
 </head>
 
 <body>  
@@ -49,6 +50,7 @@
         </script>
 
         <button id="addMoreButton" class="btn btn-default" >Add More To Cloud</button>
+        <button id="imageButton" class="btn btn-default">Download Image of Cloud</button>
       </div>
     </div>
   
@@ -75,4 +77,17 @@
         }
     });
   });
+</script>
+
+<script>
+  document.getElementById("imageButton").onclick = function() {
+    var wordcloud = document.getElementById("cloudBox");
+    
+    html2canvas(wordcloud, {
+      onrendered: function(canvas) {
+        var image = canvas.toDataURL("image/png");
+        window.open(image);
+      }
+    });
+  }
 </script>
