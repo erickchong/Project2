@@ -25,31 +25,6 @@
       <input id="limitBox" type="text" name="text" placeholder="Input Paper Limit">
       <div id="buttons">
         <button id="submitButton" class="btn btn-default">Search</button>
-        <button id="shareToFacebookButton" class="btn btn-default" >Share to Facebook</button>
-
-        <script>
-        document.getElementById('shareToFacebookButton').onclick = function() {
-          FB.ui(
-            {
-              method: 'feed',
-              name: 'LyriCloud',
-              link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-              picture: 'http://www.internal-communication.com/wp-content/uploads/2012/01/word-cloud-internal-comms.png',
-              caption: 'Your custom artist lyric cloud',
-              description: 'Artist Name Goes here'
-            },
-            function(response) {
-              if (response && response.post_id) {
-                alert('Post was published.');
-              } else {
-                alert('Post was not published.');
-              }
-            }
-          );
-        }
-        </script>
-
-        <button id="addMoreButton" class="btn btn-default" >Add More To Cloud</button>
         <button id="imageButton" class="btn btn-default">Download Image of Cloud</button>
       </div>
     </div>
@@ -72,8 +47,7 @@
         },
         success: function(msg){
           $('#cloudBox').html(msg);
-          //$('#addMoreButton').css("visibility", "visible");
-          //  $('#shareToFacebookButton').css("visibility", "visible");
+          $('#imageButton').css("visibility", "visible");
         }
     });
   });
