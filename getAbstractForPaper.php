@@ -5,9 +5,13 @@ include 'WordCloud.php';
 $title = $_GET['title'];
 $source = $_GET['source'];
 $word = $_GET['word'];
+$pdfurl = $_GET['pdfurl'];
+
 $provider = new LibraryController;
 $abstract = $provider->getAbstractForPaper($title, $source);
 $abstract = preg_replace("/\w*?".preg_quote($word)."\w*/i", "<span class='highlight'>$0</span>", $abstract);
+
+
 ?>
 
 <html>
@@ -20,6 +24,8 @@ $abstract = preg_replace("/\w*?".preg_quote($word)."\w*/i", "<span class='highli
 <body>
 	<div id="abstract">
 		<?php echo $abstract ?>
+		<!-- <br /> -->
+		<!-- <a href="<?php echo $pdfurl?>">pdf</a> -->
 	</div>
 <a href="index.html"><button id="back">Back</button></a>
 </body>

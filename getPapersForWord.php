@@ -1,6 +1,6 @@
 <?php
 include 'WordCloud.php';
-
+include 'PDFGetter.php';
 
 $author = $_GET['author'];
 $word = $_GET['word'];
@@ -28,11 +28,13 @@ $paper_list = $provider->combinePapers($word, $limit);
 		for($x = 0; $x < count($paper_list); $x++){
 			$title_is = $paper_list[$x]['title'];
 			$source_is = $paper_list[$x]['source'];
+			$pdf_url_is = getPDFURL($source_is, $paper_list[$x]['pdfURL']);
+
 			echo "<tr>"
 			."<td><div class=\"checkbox-inline\"><input type=\"checkbox\" value=\"\"></div></td>"
 			."<td class = \"td1\" align=\"center\">";
 			echo $source_is."  :  ";
-			echo "<a href=\"getAbstractForPaper.php?title={$title_is}&word={$word}&source={$source_is}\">$title_is</a> ";
+			echo "<a href=\"getAbstractForPaper.php?title={$title_is}&word={$word}&source={$source_is}&pdfurl={$pdf_url_is}\">$title_is</a> ";
 			echo "</td>"
 			."<td class = \"td1\" align=\"center\">";
 			$author_array = $paper_list[$x]["authors"];
