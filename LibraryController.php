@@ -127,6 +127,9 @@ class LibraryController {
 			
 			$paper["source"] = "acm";
 			
+			// ID used 
+			$paper["id"] = $line["id"];
+			
 			// Query the paper title
 			$paper["title"] = $line["title"];
 			
@@ -165,8 +168,14 @@ class LibraryController {
 
 	}
 
-	function getACMAbstract($title){
+	function getACMAbstract($id) {
+		$abstractURL = 'http://dl.acm.org/tab_abstract.cfm?id=' . $id;
 		
+		$abstractHTML = file_get_contents($abstractURL);
+		
+		preg_match("/<p.*?>\n?(.*)<\/p>/si", $abstractHTML, $matches); // extract the abstract itself
+		
+		return $matches[1];
 	}
 	
 	function getIEEEPapersWithAuthor($name, $limit)
@@ -215,7 +224,7 @@ class LibraryController {
         	$paper = array();
         	$paper["source"] = "ieee";
         	$paper["title"] = $document->title[0]; 
-        	
+        	$paper["id"] = $document->arnumber;
         	$abc = $document->authors;
 			$paper["authors"] = $this->parseAuthors($abc);//need to parse 
         	$paper["abstract"] = $document->abstract; 
@@ -248,7 +257,7 @@ class LibraryController {
         foreach($documents as $document){
         	$paper = array();
         	$paper["source"] = "ieee";
-        	$paper["title"] = $document->title[0]; 
+        	$paper["title"] = $document->title[0];
         	
         	$abc = $document->authors;
 			$paper["authors"] = $this->parseAuthors($abc);//need to parse 
@@ -344,12 +353,12 @@ class LibraryController {
 		return $papers;
 	}
 
-	function getAbstractForPaper($title, $source)
+	function getAbstractForPaper($title, $source, $id)
 	{
 		$libraryController = new LibraryController();
 		$abstract = "";
 		if($source=='acm'){
-			$abstract = $libraryController->getACMAbstract($title);
+			$abstract = $libraryController->getACMAbstract($id);
 		}else{
 			$abstract = $libraryController->getIEEEAbstract($title);
 		}

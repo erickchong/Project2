@@ -29,12 +29,12 @@ $paper_list = $provider->combinePapers($word, $limit);
 			$title_is = $paper_list[$x]['title'];
 			$source_is = $paper_list[$x]['source'];
 			$pdf_url_is = getPDFURL($source_is, $paper_list[$x]['pdfURL']);
-
+			$id_is = $paper_list[$x]['id'];
 			echo "<tr>"
 			."<td><div class=\"checkbox-inline\"><input type=\"checkbox\" value=\"\"></div></td>"
 			."<td class = \"td1\" align=\"center\">";
 			echo $source_is."  :  ";
-			echo "<a href=\"getAbstractForPaper.php?title={$title_is}&word={$word}&source={$source_is}&pdfurl={$pdf_url_is}\">$title_is</a> ";
+			echo "<a href=\"getAbstractForPaper.php?title={$title_is}&word={$word}&source={$source_is}&pdfurl={$pdf_url_is}&id={id_is}\">$title_is</a> ";
 			echo "</td>"
 			."<td class = \"td1\" align=\"center\">";
 			$author_array = $paper_list[$x]["authors"];

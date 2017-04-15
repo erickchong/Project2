@@ -6,9 +6,10 @@ $title = $_GET['title'];
 $source = $_GET['source'];
 $word = $_GET['word'];
 $pdfurl = $_GET['pdfurl'];
+$id = $_GET['id'];
 
 $provider = new LibraryController;
-$abstract = $provider->getAbstractForPaper($title, $source);
+$abstract = $provider->getAbstractForPaper($title, $source, $id);
 $abstract = preg_replace("/\w*?".preg_quote($word)."\w*/i", "<span class='highlight'>$0</span>", $abstract);
 
 
