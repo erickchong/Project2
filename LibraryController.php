@@ -172,6 +172,7 @@ class LibraryController {
         	$paper = array();
         	$paper["source"] = "ieee";
         	$paper["title"] = $document->title[0]; 
+        	$paper["id"] = $document->arnumber;
         	$paper["authors"] = $document->authors; //need to parse 
         	$paper["abstract"] = $document->abstract; 
         	$paper["keywords"]  = "";
@@ -264,9 +265,9 @@ class LibraryController {
 		return $papers;
 	}
 
-	function getIEEEAbstract($title){
+	function getIEEEAbstract($id){
 
-		$ieeeURL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?ti=' .rawurlencode($title);
+		$ieeeURL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?an=' .rawurlencode($id);
         $response = file_get_contents($ieeeURL);
         $documents = simplexml_load_string($response);
         $abstract_is = "";
@@ -341,7 +342,7 @@ class LibraryController {
 		if($source=='acm'){
 			$abstract = $libraryController->getACMAbstract($id);
 		}else{
-			$abstract = $libraryController->getIEEEAbstract($title);
+			$abstract = $libraryController->getIEEEAbstract($id);
 		}
 	
 		return $abstract;

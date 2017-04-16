@@ -25,6 +25,7 @@ $abstract = preg_replace("/\w*?".preg_quote($word)."\w*/i", "<span class='highli
 
 <body>
 	<div id="abstract">
+
 		<?php echo $abstract ?>
 		<!-- <br /> -->
 		<!-- <a href="<?php echo $pdfurl?>">pdf</a> -->

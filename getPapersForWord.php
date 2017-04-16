@@ -24,6 +24,8 @@ $paper_list = $provider->combinePapers($word, $limit);
         <th class = \"td1\" align=\"center\" height=50px>Paper</td>
         <th class = \"td1\" align=\"center\">Author List</td>
         <th class = \"td1\" align=\"center\">Conference Name</td>
+        <th class = \"td1\" align=\"center\">Bibtex</td>
+
         </tr>";
 		for($x = 0; $x < count($paper_list); $x++){
 			$title_is = $paper_list[$x]['title'];
@@ -34,7 +36,7 @@ $paper_list = $provider->combinePapers($word, $limit);
 			."<td><div class=\"checkbox-inline\"><input type=\"checkbox\" value=\"\"></div></td>"
 			."<td class = \"td1\" align=\"center\">";
 			echo $source_is."  :  ";
-			echo "<a href=\"getAbstractForPaper.php?title={$title_is}&word={$word}&source={$source_is}&pdfurl={$pdf_url_is}&id={id_is}\">$title_is</a> ";
+			echo "<a href=\"getAbstractForPaper.php?title={$title_is}&word={$word}&source={$source_is}&pdfurl={$pdf_url_is}&id={$id_is}\">$title_is</a> ";
 			echo "</td>"
 			."<td class = \"td1\" align=\"center\">";
 			$author_array = $paper_list[$x]["authors"];
@@ -47,7 +49,10 @@ $paper_list = $provider->combinePapers($word, $limit);
 			echo "</td>"
 			."<td class = \"td1\" align=\"center\">";
 			echo "<a href=\"getPapersForConference.php?conference={$conf_is}&limit={$limit}&source={$source_is}\">$conf_is</a> \n "	;
-			echo"</td></tr>";
+			echo "</td>"
+			."<td class = \"td1\" align=\"center\">";
+			echo "<a href=\"put-link-to-bibtex-php-here\">bibtex</a> \n ";
+			echo "</td></tr>";
 		}
 
 		echo "</table>"
