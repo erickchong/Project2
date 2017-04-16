@@ -20,8 +20,24 @@ foreach ($acmPapers as $paper)
 echo "Number of ACM papers: $numPapers \n";
 */
 
-$papers = $libraryController->combinePapers("aluminum", 20);
+$papers = $libraryController->getACMPapersWithAuthor("saito", 2);
 $numPapers = count($papers);
+
 echo "$numPapers \n";
+$id = $papers[0]["id"];
+echo "$id \n";
+$bibtex = $libraryController->getACMBibtex($id);
+$bibtexType = gettype($bibtex);
+echo "$bibtex \n";
+/*
+foreach ($papers as $paper)
+{
+	$abstract = $libraryController->getACMAbstract($paper["id"]);
+	echo "$abstract \n";
+	$type = gettype($abstract);
+	echo "Type: $type \n";
+	break;
+}
+*/
 
 ?>

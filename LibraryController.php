@@ -79,27 +79,17 @@ class LibraryController {
 			$paper = array();
 			
 			$paper["source"] = "acm";
-			
-			// Query the paper title
+			$paper["id"] = $line["id"];
 			$paper["title"] = $line["title"];
-			
-			// Query the paper authors
-			// TODO: Need to parse author names when multiple authors are present
-			$paper["authors"] = $line["author"];
-			
-			// Query the paper publication name
+			$paper["authors"] = $this->parseAuthors($line["author"]);
 			$paper["publication"] = $line["booktitle"];
-			
 			// Derive the full text URL name from the ID
 			$paper["pdfURL"] = "http://dl.acm.org/ft_gateway.cfm?id=" . $line["id"];
-			
 			// Query the paper abstract
-			$paper["abstract"] = "";
+			$paper["abstract"] = $this->getACMAbstract($line["id"]);
 			
 			$line["keywords"] = str_replace(",", "",$line["keywords"]); //remove commas
 			$line["keywords"] = strtolower($line["keywords"]); //convert to lower case
-			
-			// Query the keyword terms
 			$paper["keywords"] = $line["keywords"];
 			
 			$papers[] = $paper;
@@ -126,31 +116,17 @@ class LibraryController {
 			$paper = array();
 			
 			$paper["source"] = "acm";
-			
-			// ID used 
 			$paper["id"] = $line["id"];
-			
-			// Query the paper title
 			$paper["title"] = $line["title"];
-			
-			// Query the paper authors
-			// TODO: Need to parse author names when multiple authors are present
-			$abc = $line["author"];
-			$paper["authors"] = $this->parseAuthors($abc);
-			
+			$paper["authors"] = $this->parseAuthors($line["author"]);
 			// Query the paper publication name
 			$paper["publication"] = $line["booktitle"];
-			
 			// Derive the full text URL name from the ID
 			$paper["pdfURL"] = "http://dl.acm.org/ft_gateway.cfm?id=" . $line["id"];
-			
-			// Query the paper abstract
-			$paper["abstract"] = "";
-			
+			$paper["abstract"] = $this->getACMAbstract($line["id"]);
+
 			$line["keywords"] = str_replace(",", "",$line["keywords"]); //remove commas
 			$line["keywords"] = strtolower($line["keywords"]); //convert to lower case
-			
-			// Query the keyword terms
 			$paper["keywords"] = $line["keywords"];
 			
 			$papers[] = $paper;
@@ -164,17 +140,22 @@ class LibraryController {
 		return $papers;
 	}
 
-	function getACMPapersWithConference($conference, $limit){
-
+	// $conference, $limit
+	function getACMPapersWithConference($id){
+		// Can't find a way at the moment :(
 	}
 
 	function getACMAbstract($id) {
 		$abstractURL = 'http://dl.acm.org/tab_abstract.cfm?id=' . $id;
-		
 		$abstractHTML = file_get_contents($abstractURL);
-		
-		preg_match("/<p.*?>\n?(.*)<\/p>/si", $abstractHTML, $matches); // extract the abstract itself
-		
+		preg_match("/<p.*?>\n?(.*)<\/p>/si", $abstractHTML, $matches);
+		return $matches[1];
+	}
+
+	function getACMBibtex($id) {
+		$bibtexURL = 'http://dl.acm.org/exportformats.cfm?expformat=bibtex&id=' . $id;
+		$bibtexHTML = file_get_contents($bibtexURL);
+		preg_match("/<PRE.*?>\n?(.*)<\/pre>/si", $bibtexHTML, $matches);
 		return $matches[1];
 	}
 	
