@@ -277,6 +277,13 @@ class LibraryController {
         
 		return $abstract_is;
 	}
+
+	function getIEEEBibtex($id)
+	{
+		$ieeeURL = 'http://www.doi2bib.org/doi2bib?id=' . rawurlencode($paper["id"]);
+		$bibtex = @file_get_contents($ieeeURL);
+		return $bibtex;
+	}
 	
 	function combineKeywords($author, $limit)
 	{
