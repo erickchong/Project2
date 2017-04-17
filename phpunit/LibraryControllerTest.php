@@ -144,15 +144,41 @@ class LibraryControllerTest extends TestCase
 		$this->assertGreaterThan(0, $ieeeCount);
 	}
 
-	public function testGetPapersForConference()
+	public function testGetPapersForConferenceACM()
+	{
+		$conference = "2012 Conference on Lasers and Electro-Optics (CLEO)";
+		$limit = 5;
+		$acmPapers = $this->libraryController->getPapersForConference($conference, "acm", $limit);
+
+		$this->assertEquals(0, count($acmPapers));
+	}
+
+		public function testGetPapersForConferenceIEEE()
 	{
 		$conference = "2012 Conference on Lasers and Electro-Optics (CLEO)";
 		$limit = 5;
 		$ieeePapers = $this->libraryController->getPapersForConference($conference, "ieee", $limit);
-		$acmPapers = $this->libraryController->getPapersForConference($conference, "acm", $limit);
 
+		$this->assertGreaterThan(0, count($ieeePapers));
 		$this->assertLessThanOrEqual($limit, count($ieeePapers));
-		$this->assertEquals(0, count($acmPapers));
+	}
+
+	public function testGetAbstractForPaperACM()
+	{
+		$abstract = "";
+		$title = ":)";
+		// Chose a known specific id
+		$abstract = $this->libraryController->getAbstractForPaper($title, "acm", "1900331");
+		$this->assertGreaterThan(0, strlen($abstract));
+	}
+
+	public function testGetAbstractForPaperIEEE()
+	{
+		$abstract = "";
+		$title = ":)";
+		// Chose a known specific id
+		$abstract = $this->libraryController->getAbstractForPaper($title, "ieee", "4548940");
+		$this->assertGreaterThan(0, strlen($abstract));
 	}
 
 }
