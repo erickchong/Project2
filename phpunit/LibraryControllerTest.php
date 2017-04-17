@@ -144,6 +144,16 @@ class LibraryControllerTest extends TestCase
 		$this->assertGreaterThan(0, $ieeeCount);
 	}
 
+	public function testGetPapersForConference()
+	{
+		$conference = "2012 Conference on Lasers and Electro-Optics (CLEO)";
+		$limit = 5;
+		$ieeePapers = $this->libraryController->getPapersForConference($conference, "ieee", $limit);
+		$acmPapers = $this->libraryController->getPapersForConference($conference, "acm", $limit);
+
+		$this->assertLessThanOrEqual($limit, count($ieeePapers));
+		$this->assertEquals(0, count($acmPapers));
+	}
 
 }
 
