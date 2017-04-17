@@ -325,10 +325,7 @@ class LibraryController {
 			shuffle($papers); // Randomize order of papers
 			$papers = array_slice($papers, 0, $limit); // Get only the first $limit papers
 		}
-		$cnt = count($papers);
-		// for($x = 0; $x < $cnt; $x++){
-		// 	echo $x. " : ".$papers[$x]['title']." \n ";
-		// }
+		
 		return $papers;
 	}
 
@@ -336,7 +333,7 @@ class LibraryController {
 	{
 		$papers = array();
 		if($source=='acm'){
-			$papers = $this->getACMPapersWithConference($conference, $limit);
+			//$papers = $this->getACMPapersWithConference($conference, $limit);
 		}else{
 			$papers = $this->getIEEEPapersWithConference($conference, $limit);
 		}
