@@ -157,8 +157,14 @@ class LibraryController {
 		preg_match("/<PRE.*?>\n?(.*)<\/pre>/si", $bibtexHTML, $matches);
 
 		$bibtex = $matches[1];
-
-		
+		for ($i = 0; $i < strlen($bibtex); $i++)
+		{
+			if (substr($bibtex, $i, 1) == ",")
+			{
+				$bibtex = substr($bibtex, 0, $i + 1) . "<br>" . substr($bibtex, $i + 1);
+			}
+		}
+		return $bibtex;
 	}
 	
 	public function getIEEEPapersWithAuthor($name, $limit)
