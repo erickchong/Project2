@@ -9,6 +9,9 @@ $bibtex = "";
 $libraryController = new LibraryController();
 
 $bibtex = $libraryController->getBibtexForPaper($source, $id);
+if($source == 'ieee'){
+	echo 'generating bibtex for IEEE conferences is in progress!';
+}
 
 ?>
 

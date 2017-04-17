@@ -18,7 +18,29 @@ body {
   	font-family: Lucida Console;
 }
 
+input[type=submit] {
+    
+    margin: 0 auto;
+    padding:5px 15px; 
+    background:#ccc; 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+
+}
+
+
 .td1 {
 background: rgba(255,255,255,0.2);
 }
 
+#back {
+	 margin: 0 auto;
+    padding:5px 15px; 
+    background:#ccc; 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+}

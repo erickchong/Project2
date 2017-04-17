@@ -39,7 +39,7 @@ $paper_list = $provider->combinePapers($word, $limit);
 			echo "<tr>"
 			."<td><div class=\"checkbox-inline\"><input type=\"checkbox\" name=\"papers[]\" value=\"{$attribute}\"></div></td>"
 			."<td class = \"td1\" align=\"center\">";
-			echo $source_is."  :  ";
+			//echo $source_is."  :  ";
 			echo "<a href=\"getAbstractForPaper.php?title={$title_is}&word={$word}&source={$source_is}&pdfurl={$pdf_url_is}&id={$id_is}\">$title_is</a> ";
 			echo "</td>"
 			."<td class = \"td1\" align=\"center\">";
@@ -55,12 +55,13 @@ $paper_list = $provider->combinePapers($word, $limit);
 			echo "<a href=\"getPapersForConference.php?conference={$conf_is}&limit={$limit}&source={$source_is}\">$conf_is</a> \n "	;
 			echo "</td>"
 			."<td class = \"td1\" align=\"center\">";
-			echo "<a href=\"getBibtexForPaper.php?title={$title_is}&source={$source_is}&id={$id_is}\">bibtex</a> \n ";
+			echo "<a href=\"getBibtexForPaper.php?title={$title_is}&source={$source_is}&id={$id_is}\">Bibtex</a> \n ";
+			echo "<a href=\"inprogress.html\" style=\"color:#00bfff\" >Download Paper</a>";
 			echo "</td></tr>";
 		}
 
-		echo "</table></center>";
-		echo "<input type=\"submit\" name=\"formSubmit\" value=\"Submit\" />";
+		echo "</table></center><br><br><br>";
+		echo "<input type=\"submit\" name=\"formSubmit\" value=\"Generate word cloud from subset of papers\" />";
 		echo "</form>";
 	?>
 <a href="index.html"><button id="back">Back</button></a>

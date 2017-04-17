@@ -7,6 +7,9 @@ $source = $_GET['source'];
 $limit = $_GET['limit'];
 $provider = new LibraryController;
 $paper_list = $provider->getPapersForConference($conference, $source, $limit);
+if($source == 'acm'){
+	echo 'generating papers for ACM conferences is in progress!';
+}
 
 ?>
 
