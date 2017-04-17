@@ -175,7 +175,10 @@ class FeatureContext implements Context
      */
     public function eachPaperInTheListShouldHaveAPdfLink()
     {
-        throw new PendingException();
+        sleep(4);
+        $page = $this->session->getPage();
+
+
     }
 
     /**
