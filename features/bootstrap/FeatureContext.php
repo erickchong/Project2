@@ -19,6 +19,7 @@ class FeatureContext implements Context
 	public $page;
 
 	public $paperSearchBar;
+    public $paperNumberBar;
 	public $paperSearchTextField;
     public $searchButton;
 
@@ -42,6 +43,7 @@ class FeatureContext implements Context
 		$this->page = $this->session->getPage();
 
 		$this->paperSearchBar = $this->page->findById("inputBox");
+        $this->paperNumberBar = $this->page->findById("limitBox");
 
         $this->searchButton = $this->page->findById("submitButton");
 	}
@@ -104,6 +106,14 @@ class FeatureContext implements Context
     }
 
     /**
+     * @Given we are searching :arg1 papers
+     */
+    public function weAreSearchingPapers($arg1)
+    {
+        $this->paperNumberBar->setValue($arg1);
+    }
+
+    /**
      * @Given the search button is clicked
      */
     public function theSearchButtonIsClicked()
@@ -158,7 +168,7 @@ class FeatureContext implements Context
      */
     public function theWordIsClickedInTheCloud($arg1)
     {
-        throw new PendingException();
+
     }
 
     /**
