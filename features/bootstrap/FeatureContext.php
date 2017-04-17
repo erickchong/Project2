@@ -23,6 +23,8 @@ class FeatureContext implements Context
 	public $paperSearchTextField;
     public $searchButton;
 
+    public $limit;
+
     public $searchTerm;
 
 	/**
@@ -110,6 +112,7 @@ class FeatureContext implements Context
      */
     public function weAreSearchingPapers($arg1)
     {
+        $this->limit = $arg1;
         $this->paperNumberBar->setValue($arg1);
     }
 
@@ -178,7 +181,16 @@ class FeatureContext implements Context
         sleep(4);
         $page = $this->session->getPage();
 
+        $cells = $page->findAll("css", ".td1");
 
+        $count = 0;
+        foreach ($cells as $cell) {
+            if (strpos($cell->getText(), "Download Paper") != false) {
+                ++$count;
+            }
+        }
+
+        assertEquals($count, $this->limit);
     }
 
     /**
@@ -186,7 +198,9 @@ class FeatureContext implements Context
      */
     public function eachPaperInTheListShouldHaveABibtexLink()
     {
-        throw new PendingException();
+        $page = $this->session->getPage();
+
+
     }
 
     /**
