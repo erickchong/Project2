@@ -234,9 +234,6 @@ class FeatureContext implements Context
         sort($actual_words);
 
         assertEquals($actual_words, $expected_words);
-        // $expected_count = count($expected_words);
-        // $actual_count = count($actual_words);
-        // assertEquals($expected_count, $actual_count);
     }
 
     /**
@@ -258,15 +255,27 @@ class FeatureContext implements Context
      */
     public function theUserShouldBeAbleToDownloadAnImageOfTheWordCloud()
     {
-        throw new PendingException();
+        sleep(6);
+
+        $imageDlButton = $this->page->findById("imageButton");
+        assertNotEquals($imageDlButton, null);
+        assertTrue($imageDlButton->isVisible());
     }
 
+
+    public $conference;
     /**
      * @Given the conference :arg1 is clicked
      */
     public function theConferenceIsClicked($arg1)
     {
-        throw new PendingException();
+        $page = $this->session->getPage();
+        sleep(4);
+
+        $cells = $page->findAll("css", ".td1");
+
+        $conference = strtolower($cells[6]->getText());
+        $cells[6]->click();
     }
 
     /**
@@ -274,6 +283,8 @@ class FeatureContext implements Context
      */
     public function aListOfPapersFromShouldBeLoaded($arg1)
     {
-        throw new PendingException();
+        sleep(5);
+        $header = strtolower($this->session->getPage()->findById("header"));
+        assertEquals($header, $conference);
     }
 }
