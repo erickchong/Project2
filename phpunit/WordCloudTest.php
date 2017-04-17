@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 final class WordCloudTest extends TestCase
 {
 	//tests if words are correctly filtered out
-	public function test_filter_words(){
+	public function testFilterWords(){
 		//(Arrange) All words should be filtered out except "Hello" and "World"
 		$words = "he,she,they,them,they,and,the,me,thislyricsisnotforcommercialuse,hello,world";
         $words = explode(",", $words);
@@ -50,7 +50,7 @@ final class WordCloudTest extends TestCase
 	}
 
 	//tests if word frequency is counted correctly
-	public function test_word_freq(){
+	public function testWordFreq(){
 		//Arrange
 		$words = "lol,lol,lol,lmao,HA,ha,ha,ha,jk,jk";
         $words = explode(",", $words);
@@ -106,7 +106,7 @@ final class WordCloudTest extends TestCase
 
 	// }
 
-	public function test_WordCloudGenerator(){
+	public function testWordCloudGenerator(){
 
 		//Arrange
 		$cloud = new WordCloud();
@@ -125,6 +125,29 @@ final class WordCloudTest extends TestCase
 		//tests if the right number of tags come up
 		$tags = count($wordcloud); 
 		$this->assertEquals($tags, 1);
+		//tests if the call worked
+		//$this->assertLessThan($tags, 0);
+	}
+
+		public function testWordCloudGeneratorNotFound(){
+
+		//Arrange
+		$cloud = new WordCloud();
+		$name = "blargh";
+		// $library = new LibraryController;
+  //       $text = $library->combineKeywords($name, 10);
+		$wordcloud = $cloud->WordCloudGenerator($name, 10);
+		//Act
+        //$text = $cloud->getLyricsForArtist($name);
+  //       $words = str_word_count($text, 1);
+  //       $word_frequency = $cloud->word_freq($words);
+		// $word_c = $cloud->word_cloud($word_frequency, $name);
+		// $tags = $word_c[1];
+
+		//Assert
+		//tests if the right number of tags come up
+		$tags = count($wordcloud); 
+		$this->assertEquals(1, $tags);
 		//tests if the call worked
 		//$this->assertLessThan($tags, 0);
 	}

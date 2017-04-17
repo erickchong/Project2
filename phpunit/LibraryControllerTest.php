@@ -181,6 +181,12 @@ class LibraryControllerTest extends TestCase
 		$this->assertGreaterThan(0, strlen($abstract));
 	}
 
+	public function testGetBibtexForPaperACM()
+	{
+		$bibtex = $this->libraryController->getBibtexForPaper("acm", "1900331");
+		$this->assertGreaterThan(0, strlen($bibtex));
+	}
+
 }
 
 
