@@ -16,7 +16,17 @@ $bibtex = $libraryController->getBibtexForPaper($source, $id);
 <head>
 <link rel="stylesheet" href="./css/abstract-page.css">
 <header>
-	<div id="header"><?php echo $title ?></div>
+	<div id="header">
+		<?php
+		echo $title; 
+		?>
+		<br><br><u><center>
+		<?php
+		echo "BIBTEX"; 
+
+		?>
+		</center></u>
+	</div>
 </header>
 </head>
 

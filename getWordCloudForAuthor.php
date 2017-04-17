@@ -4,7 +4,7 @@ include 'WordCloud.php';
 $author = $_GET['author'];
 $limit = $_GET['limit'];
 $provider = new WordCloud;
-$cloud = $provider->WordCloudGenerator($author, $limit);;
+$cloud = $provider->WordCloudGenerator($author, $limit);
 
 ?>
 

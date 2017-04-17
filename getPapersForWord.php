@@ -18,6 +18,8 @@ $paper_list = $provider->combinePapers($word, $limit);
 </header>
 <body>
 	<?php 
+		echo "<form action=\"./getCombinedWordCloud.php\" method=\"post\">";
+
 		echo "<center><table border=0 style=\"width: 100%; height: 100%;\">
         <tr>
         <th align=\"center\">&nbsp;</td>
@@ -32,8 +34,10 @@ $paper_list = $provider->combinePapers($word, $limit);
 			$source_is = $paper_list[$x]['source'];
 			$pdf_url_is = getPDFURL($source_is, $paper_list[$x]['pdfURL']);
 			$id_is = $paper_list[$x]['id'];
+			$attribute = $source_is."-".$id_is;
+			
 			echo "<tr>"
-			."<td><div class=\"checkbox-inline\"><input type=\"checkbox\" value=\"\"></div></td>"
+			."<td><div class=\"checkbox-inline\"><input type=\"checkbox\" name=\"papers[]\" value=\"{$attribute}\"></div></td>"
 			."<td class = \"td1\" align=\"center\">";
 			echo $source_is."  :  ";
 			echo "<a href=\"getAbstractForPaper.php?title={$title_is}&word={$word}&source={$source_is}&pdfurl={$pdf_url_is}&id={$id_is}\">$title_is</a> ";
@@ -55,8 +59,9 @@ $paper_list = $provider->combinePapers($word, $limit);
 			echo "</td></tr>";
 		}
 
-		echo "</table>"
-		."</center>";
+		echo "</table></center>";
+		echo "<input type=\"submit\" name=\"formSubmit\" value=\"Submit\" />";
+		echo "</form>";
 	?>
 <a href="index.html"><button id="back">Back</button></a>
 </body>

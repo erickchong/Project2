@@ -160,6 +160,24 @@ class LibraryController {
 		}
 		return $bibtex;
 	}
+
+	private function getACMKeywords($acmIDs){
+		$num = count($acmIDs);
+		$keywords = "";
+
+		for($x = 0; $x < $num; $x++){
+			$id = $acmIDs[$x];
+			$acmURL = 'http://dl.acm.org/exportformats_search.cfm?query=' .rawurlencode($id). '&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv';
+			$acmCSV = file_get_contents($acmURL);
+			$lines = $this->parseCSV($acmCSV);
+			$line = $lines[0];
+			$line["keywords"] = str_replace(",", "",$line["keywords"]); //remove commas
+			$line["keywords"] = strtolower($line["keywords"]); //convert to lower case
+			$keywords = $keywords." ".$line["keywords"]; 
+		}
+
+		return $keywords;
+	}
 	
 	public function getIEEEPapersWithAuthor($name, $limit)
 	{	
@@ -290,6 +308,29 @@ class LibraryController {
 	}
 	*/
 
+	private function getIEEEKeywords($ieeeIDs){
+		$num = count($ieeeIDs);
+		$keywords = "";
+
+		for($x = 0; $x < $num; $x++){
+			$id = $ieeeIDs[$x];
+			$ieeeURL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?an=' .rawurlencode($id);
+        	$response = file_get_contents($ieeeURL);
+        	$documents = simplexml_load_string($response);
+        	foreach($documents as $document){
+	        	//$paper["keywords"]  = "";
+	        	$count = count($document->thesaurusterms->term);
+	        	
+	        	for($a = 0; $a < $count; $a++){
+	        		$word = $document->thesaurusterms->term[$a];
+	        		$keywords  =  $keywords. " ". $word;
+	        	}
+	        }
+		}
+
+		return $keywords;
+	}
+
 	public function combineKeywords($author, $limit)
 	{
 		$acmPapers = $this->getACMPapersWithAuthor($author, $limit);
@@ -362,5 +403,35 @@ class LibraryController {
 		}
 		return $bibtex;
 	}
+
+	public function combineKeywordsForMultiplePapers($papers){
+		$keywords = "";
+		$num = count($papers);
+		//echo "number is : ".$num."\n";
+		$acmIDs = array();
+		$ieeeIDs = array();
+		for($x = 0; $x < $num; $x++){
+			$paper = $papers[$x];
+			$pieces = explode("-", $paper);
+			if($pieces[0]=='acm'){
+				array_push($acmIDs, $pieces[1]);
+			}else{
+				array_push($ieeeIDs, $pieces[1]);
+			}
+		}
+
+		$acmKeywords = $this->getACMKeywords($acmIDs);
+		//echo "acm keywords are : ".$acmKeywords."\n";
+		$ieeeKeywords = $this->getIEEEKeywords($ieeeIDs);
+		//echo "ieee keywords are : ".$ieeeKeywords."\n";
+		$keywords = $acmKeywords." ".$ieeeKeywords;
+		$keywords = trim(preg_replace('/\s+/', ' ', $keywords));
+		return $keywords;
+	}
 }
+
+
+//http://dl.acm.org/exportformats_search.cfm?query=%281352234%29&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv
+//http://dl.acm.org/exportformats_search.cfm?query=%281140185%29&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv
 ?>
+
