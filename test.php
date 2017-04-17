@@ -26,7 +26,7 @@ $numPapers = count($papers);
 echo "$numPapers \n";
 $id = $papers[0]["id"];
 echo "$id \n";
-$bibtex = $libraryController->getACMBibtex($id);
+$bibtex = $libraryController->getBibtexForPaper("acm", $id);
 $bibtexType = gettype($bibtex);
 echo "$bibtex \n";
 /*

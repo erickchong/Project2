@@ -8,14 +8,7 @@ $id = $_GET['id'];
 $bibtex = "";
 $libraryController = new LibraryController();
 
-if ($source == "acm")
-{
-	$bibtex = $libraryController->getACMBibtex($id);
-}
-else
-{
-	$bibtex = $libraryController->getIEEEBibtex($id);
-}
+$bibtex = $libraryController->getBibtexForPaper($source, $id);
 
 ?>
 

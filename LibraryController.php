@@ -34,14 +34,10 @@ class LibraryController {
 		$builder = "";
 		$readAuthor = false;
 		
-		//echo "$authors \n";
 		for ($i = 0; $i < strlen($authors); $i++)
 		{
-			//$builder .= $authors;
-			//echo "$builder \n";
 			if (substr($authors, $i, 2) == "; " || $i == strlen($authors) - 1)
 			{
-				//echo "In first else \n";
 				if ((substr($authors, $i, 1) != ";" && substr($authors, $i, 1) != " ") || $i == strlen($authors) - 1)
 				{
 					$builder .= substr($authors, $i, 1);
@@ -52,12 +48,10 @@ class LibraryController {
 			}
 			else if ($readAuthor == true)
 			{
-				//echo "In 2nd else \n";
 				$builder .= substr($authors, $i, 1);
 			}
 			else if ($readAuthor == false && substr($authors, $i, 1) != " ")
 			{
-				//echo "In 3rd else \n";
 				$builder .= substr($authors, $i, 1);
 				$readAuthor = true;
 			}
@@ -85,7 +79,7 @@ class LibraryController {
 			// Derive the full text URL name from the ID
 			$paper["pdfURL"] = "http://dl.acm.org/ft_gateway.cfm?id=" . $line["id"];
 			// Query the paper abstract
-			$paper["abstract"] = $this->getACMAbstract($line["id"]);
+			$paper["abstract"] = "";
 			
 			$line["keywords"] = str_replace(",", "",$line["keywords"]); //remove commas
 			$line["keywords"] = strtolower($line["keywords"]); //convert to lower case
@@ -122,7 +116,7 @@ class LibraryController {
 			$paper["publication"] = $line["booktitle"];
 			// Derive the full text URL name from the ID
 			$paper["pdfURL"] = "http://dl.acm.org/ft_gateway.cfm?id=" . $line["id"];
-			$paper["abstract"] = $this->getACMAbstract($line["id"]);
+			$paper["abstract"] = "";
 
 			$line["keywords"] = str_replace(",", "",$line["keywords"]); //remove commas
 			$line["keywords"] = strtolower($line["keywords"]); //convert to lower case
@@ -151,7 +145,7 @@ class LibraryController {
 		return $matches[1];
 	}
 
-	public function getACMBibtex($id) {
+	private function getACMBibtex($id) {
 		$bibtexURL = 'http://dl.acm.org/exportformats.cfm?expformat=bibtex&id=' . $id;
 		$bibtexHTML = file_get_contents($bibtexURL);
 		preg_match("/<PRE.*?>\n?(.*)<\/pre>/si", $bibtexHTML, $matches);
@@ -159,9 +153,9 @@ class LibraryController {
 		$bibtex = $matches[1];
 		for ($i = 0; $i < strlen($bibtex); $i++)
 		{
-			if (substr($bibtex, $i, 1) == ",")
+			if (substr($bibtex, $i, 2) == "},")
 			{
-				$bibtex = substr($bibtex, 0, $i + 1) . "<br>" . substr($bibtex, $i + 1);
+				$bibtex = substr($bibtex, 0, $i + 2) . "<br> " . substr($bibtex, $i + 2);
 			}
 		}
 		return $bibtex;
@@ -273,7 +267,7 @@ class LibraryController {
 		return $papers;
 	}
 
-	public function getIEEEAbstract($id)
+	private function getIEEEAbstract($id)
 	{
 
 		$ieeeURL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?an=' .rawurlencode($id);
@@ -287,13 +281,15 @@ class LibraryController {
 		return $abstract_is;
 	}
 
+	/* // Doesn't work atm
 	private function getIEEEBibtex($id)
 	{
 		$ieeeURL = 'http://www.doi2bib.org/doi2bib?id=' . rawurlencode($id);
 		$bibtex = @file_get_contents($ieeeURL);
 		return $bibtex;
 	}
-	
+	*/
+
 	public function combineKeywords($author, $limit)
 	{
 		$acmPapers = $this->getACMPapersWithAuthor($author, $limit);
@@ -358,6 +354,16 @@ class LibraryController {
 		}
 	
 		return $abstract;
+	}
+
+	public function getBibtexForPaper($source, $id)
+	{
+		$bibtex = "";
+		if ($source == "acm")
+		{
+			$bibtex = $this->getACMBibtex($id);
+		}
+		return $bibtex;
 	}
 }
 ?>
