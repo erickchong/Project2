@@ -127,19 +127,9 @@ class FeatureContext implements Context
     public function aWordCloudShouldBeGeneratedWithinSeconds($arg1)
     {
         sleep($arg1);
-        $wordcloud = $this->page->find("css", "#cloudBox");
+        $wordcloud = $this->page->findById("innerCloud");
         assertNotEquals(null, $wordcloud);
     }
-
-    // /**
-    //  * @Given the search term was :arg1
-    //  */
-    // public function theSearchTermWas($arg1)
-    // {
-    //     $this->searchTerm = $arg1;
-    //     $this->paperSearchBar->setValue($arg1);
-    //     $this->searchButton->click();
-    // }
 
     /**
      * @Then the word cloud title should match
@@ -161,14 +151,23 @@ class FeatureContext implements Context
         assertEquals($text, $arg1);
     }
 
-
-
     /**
      * @Given the word :arg1 is clicked in the cloud
      */
     public function theWordIsClickedInTheCloud($arg1)
     {
+        sleep(6);
 
+        $wordcloud = $this->page->findById("innerCloud");
+        $links = $wordcloud->findAll("xpath", "//a");
+        $arg1 = strtolower($arg1);
+
+        foreach ($links as $link) {
+            if (strtolower($link->getText()) == $arg1) {
+                $link->click();
+                break;
+            }
+        }
     }
 
     /**
@@ -224,7 +223,20 @@ class FeatureContext implements Context
      */
     public function theWordCloudShouldContainTheWords($arg1)
     {
-        throw new PendingException();
+        $arg1 = strtolower($arg1);
+        $expected_words = explode(" ", $arg1);
+
+        sleep(4);
+        $wordcloud = $wordcloud = $this->page->findById("innerCloud");
+        $actual_words = array_map(function($link) { return strtolower($link->getText()); }, $wordcloud->findAll("xpath", "//a"));
+
+        sort($expected_words);
+        sort($actual_words);
+
+        assertEquals($actual_words, $expected_words);
+        // $expected_count = count($expected_words);
+        // $actual_count = count($actual_words);
+        // assertEquals($expected_count, $actual_count);
     }
 
     /**
@@ -232,7 +244,13 @@ class FeatureContext implements Context
      */
     public function aListOfPapersContainingTheWordShouldBeLoaded($arg1)
     {
-        throw new PendingException();
+        sleep(10);
+        $page = $this->session->getPage();
+
+        $arg1 = strtolower($arg1);
+        $header = strtolower($page->findById("header")->getText());
+
+        assertEquals($header, $arg1);
     }
 
     /**
