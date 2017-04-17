@@ -405,26 +405,25 @@ class LibraryController {
 	}
 
 	public function combineKeywordsForMultiplePapers($papers){
+		//$papers is an array with elements in the form of 'source-id' for example:
+		// {acm-1047361, ieee-66012, ...} 
 		$keywords = "";
 		$num = count($papers);
-		//echo "number is : ".$num."\n";
-		$acmIDs = array();
-		$ieeeIDs = array();
+		$acmIDs = array(); //array for acm papers' ids
+		$ieeeIDs = array(); //array for ieee papers' ids
 		for($x = 0; $x < $num; $x++){
-			$paper = $papers[$x];
-			$pieces = explode("-", $paper);
-			if($pieces[0]=='acm'){
-				array_push($acmIDs, $pieces[1]);
-			}else{
-				array_push($ieeeIDs, $pieces[1]);
+			$paper = $papers[$x]; //for each element
+			$pieces = explode("-", $paper); //parse it using '-' as the delimeter
+			if($pieces[0]=='acm'){ //if the source is acm
+				array_push($acmIDs, $pieces[1]); //add the id to acm array
+			}else{ //if the source is ieee
+				array_push($ieeeIDs, $pieces[1]); //add the id to ieee array
 			}
 		}
 
-		$acmKeywords = $this->getACMKeywords($acmIDs);
-		//echo "acm keywords are : ".$acmKeywords."\n";
-		$ieeeKeywords = $this->getIEEEKeywords($ieeeIDs);
-		//echo "ieee keywords are : ".$ieeeKeywords."\n";
-		$keywords = $acmKeywords." ".$ieeeKeywords;
+		$acmKeywords = $this->getACMKeywords($acmIDs); //get a single string of all the acm keywords
+		$ieeeKeywords = $this->getIEEEKeywords($ieeeIDs); //get a single string of all ieee keywords
+		$keywords = $acmKeywords." ".$ieeeKeywords; //combine the two together
 		$keywords = trim(preg_replace('/\s+/', ' ', $keywords));
 		return $keywords;
 	}
