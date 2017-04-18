@@ -12,14 +12,6 @@ Scenario: Each paper should have links to download its pdf and bibtex
 	Then each paper in the list should have a pdf link
 	And each paper in the list should have a bibtex link
 
-@pdfandabstract
-Scenario: Clicking on a paper's title should download a PDF of the paper and load the abstract
-	Given the name "Jacob Rosenberg" is entered into the search bar
-	And we are searching 10 papers
-	And the search button is clicked
-	And the word "Programming" is clicked in the cloud
-	Then clicking the title of each paper in the list should download a PDF and load the abstract
-
 @subset
 Scenario: From the paper list, the user should be able to select a subset for a new word cloud
 	Given the name "Jacob Rosenberg" is entered into the search bar
