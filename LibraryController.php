@@ -5,6 +5,12 @@ class LibraryController {
 	
 	function __construct() {}
 
+	// Used to sort papers by title. Used in combinePapers function
+	private function cmp($a, $b)
+	{
+		return strcmp($a["title"], $b["title"]);
+	}
+
 	private function parseCSV($text)
 	{
 		$lines = explode(PHP_EOL, $text);
@@ -361,9 +367,10 @@ class LibraryController {
 		$papers = array_merge($acmPapers, $ieeePapers);
 		$numPapers = count($papers);
 		//echo "Initial amount of papers: $numPapers \n";
+		usort($papers, array($this, "cmp"));
 		if (count($papers > $limit))
 		{
-			shuffle($papers); // Randomize order of papers
+			//shuffle($papers); // Randomize order of papers
 			$papers = array_slice($papers, 0, $limit); // Get only the first $limit papers
 		}
 		
