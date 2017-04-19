@@ -187,6 +187,9 @@ class LibraryControllerTest extends TestCase
 		$this->assertGreaterThan(0, strlen($bibtex));
 	}
 
+	// TODO: Whitebox test for downloading image of word cloud.
+	// Probably use Jasmine?
+
 }
 
 
