@@ -190,6 +190,9 @@ class LibraryControllerTest extends TestCase
 	// TODO: Whitebox test for downloading image of word cloud.
 	// Probably use Jasmine?
 
+
+	// TODO: Blackbox test for exporting paper list as a pdf file or plain text
+
 }
 
 
