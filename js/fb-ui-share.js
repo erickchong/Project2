@@ -2,7 +2,7 @@
 * FB SETTINGS
 */
 
-
+//comment
   // 1. Get a unique appId for the website from https://developers.facebook.com/apps
   //    The title will be visible in the post, so make it the name of the site (e.g. Taco Truck for Congress)
   // 2. In "Settings", click "+ Add Platform", select "Website", and add the site URL (localhost is cool initially too)
