@@ -305,15 +305,13 @@ class LibraryController {
 		return $abstract_is;
 	}
 
-	/* // Doesn't work atm
 	private function getIEEEBibtex($id)
 	{
 		$ieeeURL = 'http://www.doi2bib.org/doi2bib?id=' . rawurlencode($id);
 		$bibtex = @file_get_contents($ieeeURL);
 		return $bibtex;
 	}
-	*/
-
+	
 	private function getIEEEKeywords($ieeeIDs){
 		$num = count($ieeeIDs);
 		$keywords = "";
