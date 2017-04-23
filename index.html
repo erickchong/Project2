@@ -6,8 +6,10 @@
 <link href="./css/bootstrap.min.css" rel="stylesheet">
 <link href="./css/bootstrap-theme.min.css" rel="stylesheet">
 <link href="./css/theme.css" rel="stylesheet">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript" src="./js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="./js/ajax.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script type="text/javascript" src="./js/fb-ui-share.js"></script>
 <script type="text/javascript" src="./js/html2canvas.js"></script>
 </head>
@@ -18,11 +20,13 @@
   </header> 
   <div id="cloudPane">
     <div id="cloudBox"></div>
+    <div id="wordCloudLoading" style="display:none"></div>
   </div>
   
     <div id ="inputPane">
       <input id="inputBox" type="text" name="text" placeholder="Input Author Name">
       <input id="limitBox" type="text" name="text" placeholder="Input Paper Limit">
+       
       <div id="buttons">
         <button id="submitButton" class="btn btn-default">Search</button>
         <button id="imageButton" class="btn btn-default">Download Image of Cloud</button>
@@ -36,7 +40,30 @@
   $("#submitButton").click(function(){
     $.ajax({
         beforeSend: function() {
-          $('#cloudBox').html("<div id=\"generating\">Generating Cloud...</div>");
+          //$('#cloudBox').html("<div id=\"generating\">Generating Cloud...</div>");
+          var limit = $('#limitBox').val()
+          var estimatedTime = Math.max(10000, limit * 35); 
+          var progressbar = $("#wordCloudLoading");
+          progressbar.progressbar({
+            value: 0
+          });
+          progressbar.show(0);
+    
+          var t = 0, dt = 40;
+          var completionHandler = false;
+          function progress() { 
+            var val = progressbar.progressbar("value");
+      
+            progressbar.progressbar("value", completionHandler ? (val+5) : (25*Math.log(t/estimatedTime) + 100));
+      
+            if (val < 99 || !completionHandler) {
+              t += dt;
+              setTimeout(progress, dt);
+            } else {
+              return;
+            }
+          }
+          progress();
         },
         type: "post",
         url: "getWordCloud.php",
@@ -46,6 +73,7 @@
           limit: $('#limitBox').val()
         },
         success: function(msg){
+          //$('#wordCloudLoading').hide(0);
           $('#cloudBox').html(msg);
           $('#imageButton').css("visibility", "visible");
         }

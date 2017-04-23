@@ -55,7 +55,7 @@ $paper_list = $provider->combinePapers($word, $limit);
 			echo "<a href=\"getPapersForConference.php?conference={$conf_is}&limit={$limit}&source={$source_is}\">$conf_is</a> \n "	;
 			echo "</td>"
 			."<td class = \"td1\" align=\"center\">";
-			echo "<a href=\"getBibtexForPaper.php?title={$title_is}&source={$source_is}&id={$id_is}\">Bibtex</a> \n ";
+			echo "<a href=\"getBibtexForPaper.php?title={$title_is}&source={$source_is}&id={$id_is}\">BibTex</a> \n ";
 			echo "<a href=\"inprogress.html\" style=\"color:#00bfff\" >Download Paper</a>";
 			echo "</td></tr>";
 		}

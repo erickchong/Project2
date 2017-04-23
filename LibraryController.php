@@ -308,7 +308,7 @@ class LibraryController {
 	private function getIEEEBibtex($id)
 	{
 		$ieeeURL = 'http://www.doi2bib.org/doi2bib?id=' . rawurlencode($id);
-		$bibtex = @file_get_contents($ieeeURL);
+		$bibtex = file_get_contents($ieeeURL);
 		return $bibtex;
 	}
 	
