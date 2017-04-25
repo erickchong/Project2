@@ -143,8 +143,7 @@ class LibraryController {
 	public function getACMPapersWithConference($conference, $limit){
 		// Can't find a way at the moment :(
 		$papers = array();
-		echo $conference."\n \n";
-		$acmURL ='http://dl.acm.org/exportformats_search.cfm?query=' .rawurldecode($conference). '&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv';
+		$acmURL ='http://dl.acm.org/exportformats_search.cfm?query=' .rawurlencode($conference). '&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv';
 		//$acmURL='http://dl.acm.org/exportformats_search.cfm?query='.rawurldecode($conference).'&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv';
 		$acmCSV = file_get_contents($acmURL);
 
