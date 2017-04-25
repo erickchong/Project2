@@ -138,7 +138,6 @@ class WordCloud
 
             return $word_cloud;
         }
-        //$text = $provider->getLyricsForArtist($artist_name);
         
     }
 
