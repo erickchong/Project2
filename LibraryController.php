@@ -172,7 +172,7 @@ class LibraryController {
 
 					$line["keywords"] = str_replace(",", "",$line["keywords"]); //remove commas
 					$line["keywords"] = strtolower($line["keywords"]); //convert to lower case
-					$paper["keywords"] = $line["keywords"];  
+					$paper["keywords"] = $line["keywords"];    
 					
 					$papers[] = $paper;
 				}
