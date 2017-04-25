@@ -140,8 +140,51 @@ class LibraryController {
 	}
 
 	// $conference, $limit
-	public function getACMPapersWithConference($id){
+	public function getACMPapersWithConference($conference, $limit){
 		// Can't find a way at the moment :(
+		$papers = array();
+		echo $conference."\n \n";
+		$acmURL ='http://dl.acm.org/exportformats_search.cfm?query=' .rawurldecode($conference). '&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv';
+		//$acmURL='http://dl.acm.org/exportformats_search.cfm?query='.rawurldecode($conference).'&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv';
+		$acmCSV = file_get_contents($acmURL);
+
+		$lines = $this->parseCSV($acmCSV);
+		
+		foreach ($lines as $line) {
+			if (isset($line)){
+				// echo count($line)."@@@@ \n";
+				// foreach($line as $key => $value){
+				// 	echo "{$key} => {$value}"."\n";
+				// }
+				
+				if($line["type"]=="article" && $line["booktitle"]==$conference){
+					$paper = array();
+				
+					$paper["source"] = "acm";
+					$paper["id"] = $line["id"];
+					$paper["title"] = $line["title"];
+					$paper["authors"] = $this->parseAuthors($line["author"]);
+					// Query the paper publication name
+					$paper["publication"] = $line["booktitle"];
+					// Derive the full text URL name from the ID
+					$paper["pdfURL"] = "http://dl.acm.org/ft_gateway.cfm?id=" . $line["id"];
+					$paper["abstract"] = "";
+
+					$line["keywords"] = str_replace(",", "",$line["keywords"]); //remove commas
+					$line["keywords"] = strtolower($line["keywords"]); //convert to lower case
+					$paper["keywords"] = $line["keywords"];
+					
+					$papers[] = $paper;
+				}
+				
+				
+				if (count($papers) == $limit){
+					break;
+				}
+			}
+		}
+		
+		return $papers;
 	}
 
 	private function getACMAbstract($id) {
@@ -379,7 +422,7 @@ class LibraryController {
 	{
 		$papers = array();
 		if($source=='acm'){
-			//$papers = $this->getACMPapersWithConference($conference, $limit);
+			$papers = $this->getACMPapersWithConference($conference, $limit);
 		}else{
 			$papers = $this->getIEEEPapersWithConference($conference, $limit);
 		}

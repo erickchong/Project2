@@ -32,9 +32,6 @@ body {
 }
 
 
-.ui-progressbar {
- 	background: #4CE346;
-}
 
 .ui-widget.ui-widget-content {
     border: 1px solid #FF0000;
@@ -45,15 +42,9 @@ body {
     background: #00FF00;
 }
 
-.ui-progressbar.ui-progressbar-value{
+.ui-progressbar.ui-widget-value{
 	background: #2C3E50;
 }
-
-.ui-progressbar.ui-widget-header {
-    color: #FF0000;
-    background: #0000FF
-}
-
 
  
 #wordCloudLoading {
