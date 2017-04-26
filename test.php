@@ -20,30 +20,22 @@ foreach ($acmPapers as $paper)
 echo "Number of ACM papers: $numPapers \n";
 */
 
-/*
-$papers = $libraryController->getIEEEPapersWithAuthor("saito", 5);
+
+$papers = $libraryController->getIEEEPapersWithWord("java", 5);
 $numPapers = count($papers);
 
 echo "$numPapers \n";
+
 foreach ($papers as $paper)
 {
-	$source = $paper["source"];
-	echo "Source: $source \n";
-	$id = $paper["id"];
-	echo "ID: $id \n";
-	$keywords = $paper["keywords"];
-	echo "Keywords : $keywords \n";
+	$doi = $paper["doi"];
+	echo "DOI: $doi \n";
+	$bibtex = $libraryController->getIEEEBibtex($doi);
+	echo "$bibtex \n";
+	break;
 }
-*/
 
 
-
-$papers = $libraryController->combinePapers("saito", 10);
-foreach ($papers as $paper)
-{
-	$title = $paper["title"];
-	echo "Title: $title \n";
-}
 
 
 /*

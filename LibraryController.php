@@ -241,6 +241,9 @@ class LibraryController {
         	$paper["source"] = "ieee";
         	$paper["title"] = $document->title[0]; 
         	$paper["id"] = $document->arnumber;
+
+			$paper["doi"] = $document->doi;
+
         	$paper["authors"] = $document->authors; //need to parse 
         	$paper["abstract"] = $document->abstract; 
         	$paper["keywords"]  = "";
@@ -275,6 +278,9 @@ class LibraryController {
         	$paper["source"] = "ieee";
         	$paper["title"] = $document->title[0]; 
         	$paper["id"] = $document->arnumber;
+
+        	$paper["doi"] = $document->doi;
+
         	$abc = $document->authors;
 			$paper["authors"] = $this->parseAuthors($abc);//need to parse 
         	$paper["abstract"] = $document->abstract; 
@@ -347,11 +353,31 @@ class LibraryController {
 		return $abstract_is;
 	}
 
-	private function getIEEEBibtex($id)
+	public function getIEEEBibtex($id)
 	{
 		$ieeeURL = 'http://www.doi2bib.org/doi2bib?id=' . rawurlencode($id);
-		$bibtex = file_get_contents($ieeeURL);
-		return $bibtex;
+		$bibtex = @file_get_contents($ieeeURL);
+		if ($bibtex === false)
+		{
+			return "Bibtex not available :(";
+		}
+		else
+		{	
+			// Attempting to insert <br> but formatting is more complex and different. TODO!!!
+			/*
+			$category = "";
+			for ($i = 0; $i < strlen($bibtex); $i++)
+			{
+
+				if (substr($bibtex, $i, 2) == "},")
+				{
+					$bibtex = substr($bibtex, 0, $i + 2) . "<br> " . substr($bibtex, $i + 2);
+				}
+			}
+			*/
+			return $bibtex;
+		}
+		
 	}
 	
 	private function getIEEEKeywords($ieeeIDs){
@@ -447,6 +473,10 @@ class LibraryController {
 		if ($source == "acm")
 		{
 			$bibtex = $this->getACMBibtex($id);
+		}
+		else
+		{
+			$bibtex = $this->getIEEEBibtex($id);
 		}
 		return $bibtex;
 	}
