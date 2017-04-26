@@ -9,6 +9,11 @@ $provider = new LibraryController;
 $paper_list = $provider->combinePapers($word, $limit);
 ?>
 
+<script type="text/javascript">
+	var author = '<?php echo $author ?>';
+	var word = '<?php echo $word ?>';
+</script>
+
 <html>
 <head>
 	<title> <?php echo "Papers for \"".$word."\"" ?> </title>
@@ -16,6 +21,7 @@ $paper_list = $provider->combinePapers($word, $limit);
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
 	<script type="text/javascript" src="./js/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript" src="./js/jspdf.plugin.autotable.min.js"></script>
+	<script type="text/javascript" src="./js/FileSaver.js"></script>
 </head>
 <header>
 	<div id="header"><?php echo strtoupper($word)?></div>
@@ -76,7 +82,19 @@ $paper_list = $provider->combinePapers($word, $limit);
 
 <script>
 	$('#textdownload').click(function () {
+		var source = document.getElementById("papertable");
+		var text = author + " : " + word;
 
+		for (var i = 0, row; row = source.rows[i]; i++) {
+			text += "\n\n";
+
+			for (var j = 1, col; col = row.cells[j]; j++) {
+				text += col.textContent.replace(new RegExp('\r?\n','g'), ' '); + "\t";
+			}
+		}
+
+		var data = new Blob([text], {type: 'text/plain'});
+		saveAs(data, "paper-list.txt");	
 	});
 
 	$('#pdfdownload').click(function () {
