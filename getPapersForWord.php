@@ -66,7 +66,7 @@ $paper_list = $provider->combinePapers($word, $limit);
 			echo "</td>"
 			."<td class = \"td1\" align=\"center\">";
 			echo "<a href=\"getBibtexForPaper.php?title={$title_is}&source={$source_is}&id={$id_is}\">BibTex</a> \n ";
-			echo "<a href=\"inprogress.html\" style=\"color:#00bfff\" >Download Paper</a>";
+			echo "<a href=\"{$pdf_url_is}\" style=\"color:#00bfff\" >Download Paper</a>";
 			echo "</td></tr>";
 		}
 
