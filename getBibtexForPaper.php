@@ -4,14 +4,15 @@ include_once 'WordCloud.php';
 $title = $_GET['title'];
 $source = $_GET['source'];
 $id = $_GET['id'];
+$doi = $_GET['doi'];
 
 $bibtex = "";
 $libraryController = new LibraryController();
 
-$bibtex = $libraryController->getBibtexForPaper($source, $id);
-if($source == 'ieee'){
-	echo 'generating BibTex for IEEE conferences is in progress!';
-}
+$bibtex = $libraryController->getBibtexForPaper($source, $id, $doi);
+// if($source == 'ieee'){
+// 	echo 'generating BibTex for IEEE conferences is in progress!';
+// }
 
 ?>
 

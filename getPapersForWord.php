@@ -42,6 +42,7 @@ $paper_list = $provider->combinePapers($word, $limit);
 		for($x = 0; $x < count($paper_list); $x++){
 			$title_is = $paper_list[$x]['title'];
 			$source_is = $paper_list[$x]['source'];
+			$doi_is = $paper_list[$x]['doi'];
 			$pdf_url_is = getPDFURL($source_is, $paper_list[$x]['pdfURL']);
 			$id_is = $paper_list[$x]['id'];
 			$attribute = $source_is."-".$id_is;
@@ -65,7 +66,7 @@ $paper_list = $provider->combinePapers($word, $limit);
 			echo "<a href=\"getPapersForConference.php?conference={$conf_is}&limit={$limit}&source={$source_is}\">$conf_is</a> \n "	;
 			echo "</td>"
 			."<td class = \"td1\" align=\"center\">";
-			echo "<a href=\"getBibtexForPaper.php?title={$title_is}&source={$source_is}&id={$id_is}\">BibTex</a> \n ";
+			echo "<a href=\"getBibtexForPaper.php?title={$title_is}&source={$source_is}&id={$id_is}&doi={$doi_is}\">BibTex</a> \n ";
 			echo "<a href=\"{$pdf_url_is}\" style=\"color:#00bfff\" >Download Paper</a>";
 			echo "</td></tr>";
 		}

@@ -118,6 +118,7 @@ class LibraryController {
 			$paper["id"] = $line["id"];
 			$paper["title"] = $line["title"];
 			$paper["authors"] = $this->parseAuthors($line["author"]);
+			$paper["doi"] = "0000";
 			// Query the paper publication name
 			$paper["publication"] = $line["booktitle"];
 			// Derive the full text URL name from the ID
@@ -353,7 +354,7 @@ class LibraryController {
 		return $abstract_is;
 	}
 
-	public function getIEEEBibtex($id)
+	public function getIEEEBibtex($id, $doi)
 	{
 		$ieeeURL = 'http://www.doi2bib.org/doi2bib?id=' . rawurlencode($id);
 		$bibtex = @file_get_contents($ieeeURL);
@@ -467,7 +468,7 @@ class LibraryController {
 		return $abstract;
 	}
 
-	public function getBibtexForPaper($source, $id)
+	public function getBibtexForPaper($source, $id, $doi)
 	{
 		$bibtex = "";
 		if ($source == "acm")
@@ -476,7 +477,7 @@ class LibraryController {
 		}
 		else
 		{
-			$bibtex = $this->getIEEEBibtex($id);
+			$bibtex = $this->getIEEEBibtex($id, $doi);
 		}
 		return $bibtex;
 	}
