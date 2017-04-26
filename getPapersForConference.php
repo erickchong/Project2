@@ -15,7 +15,9 @@ $paper_list = $provider->getPapersForConference($conference, $source, $limit);
 
 <html>
 <head>
-<link rel="stylesheet" href="./css/papers-page.css">
+	<title><?php echo "Papers for ".$conference ?></title>
+	<link rel="stylesheet" href="./css/papers-page.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
 </head>
 <header>
 	<div id="header"><?php echo strtoupper($conference)?></div>

@@ -28,7 +28,7 @@ Scenario: From the paper list, clicking an author should generate a new cloud fo
 	And the search button is clicked
 	And the word "Programming" is clicked in the cloud
 	And the name "Chris Jensen" is clicked from the author list
-	Then the word cloud title should match
+	Then we should have a matching word cloud
 
 
 @conference
