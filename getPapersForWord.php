@@ -14,6 +14,8 @@ $paper_list = $provider->combinePapers($word, $limit);
 	<title> <?php echo "Papers for \"".$word."\"" ?> </title>
 	<link rel="stylesheet" href="./css/papers-page.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
+	<script type="text/javascript" src="./js/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="./js/jspdf.plugin.autotable.min.js"></script>
 </head>
 <header>
 	<div id="header"><?php echo strtoupper($word)?></div>
@@ -22,7 +24,7 @@ $paper_list = $provider->combinePapers($word, $limit);
 	<?php 
 		echo "<form action=\"./getCombinedWordCloud.php\" method=\"post\">";
 
-		echo "<center><table border=0 style=\"width: 100%; height: 100%;\">
+		echo "<center><table id=\"papertable\" border=0 style=\"width: 100%; height: 100%;\">
         <tr>
         <th align=\"center\">&nbsp;</td>
         <th class = \"td1\" align=\"center\" height=50px>Paper</td>
@@ -66,7 +68,25 @@ $paper_list = $provider->combinePapers($word, $limit);
 		echo "<input type=\"submit\" name=\"formSubmit\" value=\"Generate word cloud from subset of papers\" />";
 		echo "</form>";
 	?>
+<button id="textdownload">Download table as plain text</button></br>
+<button id="pdfdownload">Download table as PDF</button><br/>
 <a href="index.html"><button id="back">Back</button></a>
 </body>
 </html>
-	
+
+<script>
+	$('#textdownload').click(function () {
+
+	});
+
+	$('#pdfdownload').click(function () {
+		// based on an answer from http://stackoverflow.com/questions/23035858/export-html-table-to-pdf-using-jspdf
+        var pdf = new jsPDF('p', 'pt', 'letter', true);
+        var source = document.getElementById("papertable");
+        var res = pdf.autoTableHtmlToJson(source);
+        var columns = [res.columns[1], res.columns[2], res.columns[3]];
+        var data = res.data.map(function(arr) { return [arr[1], arr[2], arr[3]]; });
+        pdf.autoTable(columns, data);
+        pdf.save("paper-list.pdf");
+    });
+</script>
