@@ -64,12 +64,22 @@ class LibraryController {
 		}
 		return $result;
 	}
-	
-	public function getACMPapersWithAuthor($name, $limit)
-	{	
+
+	public function getACMPapers($word, $limit, $type)
+	{
 		$papers = array();
 
-		$acmURL = 'http://dl.acm.org/exportformats_search.cfm?query=persons%2Eauthors%2EpersonName%3A%28%252B' . urlencode($name) . '%29&srt=%5Fscore&expformat=csv';
+		$acmURL - "";
+
+		if ($type == "author")
+		{
+			$acmURL = 'http://dl.acm.org/exportformats_search.cfm?query=persons%2Eauthors%2EpersonName%3A%28%252B' . urlencode($word) . '%29&srt=%5Fscore&expformat=csv';
+		}
+		else
+		{
+			$acmURL = 'http://dl.acm.org/exportformats_search.cfm?query=' .rawurlencode($word). '&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv';
+		}
+
 		$acmCSV = file_get_contents($acmURL);
 
 		$lines = $this->parseCSV($acmCSV);
@@ -79,6 +89,7 @@ class LibraryController {
 			
 			$paper["source"] = "acm";
 			$paper["id"] = $line["id"];
+			$paper["doi"] = "0000";
 			$paper["title"] = $line["title"];
 			$paper["authors"] = $this->parseAuthors($line["author"]);
 			$paper["publication"] = $line["booktitle"];
@@ -87,44 +98,6 @@ class LibraryController {
 			// Query the paper abstract
 			$paper["abstract"] = "";
 			
-			$line["keywords"] = str_replace(",", "",$line["keywords"]); //remove commas
-			$line["keywords"] = strtolower($line["keywords"]); //convert to lower case
-			$paper["keywords"] = $line["keywords"];
-			
-			$papers[] = $paper;
-			
-			if (count($papers) == $limit)
-			{
-				break;
-			}
-		}
-		
-		return $papers;
-	}
-	
-	public function getACMPapersWithWord($word, $limit)
-	{
-		$papers = array();
-
-		$acmURL = 'http://dl.acm.org/exportformats_search.cfm?query=' .rawurlencode($word). '&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv';
-		$acmCSV = file_get_contents($acmURL);
-
-		$lines = $this->parseCSV($acmCSV);
-		
-		foreach ($lines as $line) {
-			$paper = array();
-			
-			$paper["source"] = "acm";
-			$paper["id"] = $line["id"];
-			$paper["title"] = $line["title"];
-			$paper["authors"] = $this->parseAuthors($line["author"]);
-			$paper["doi"] = "0000";
-			// Query the paper publication name
-			$paper["publication"] = $line["booktitle"];
-			// Derive the full text URL name from the ID
-			$paper["pdfURL"] = "http://dl.acm.org/ft_gateway.cfm?id=" . $line["id"];
-			$paper["abstract"] = "";
-
 			$line["keywords"] = str_replace(",", "",$line["keywords"]); //remove commas
 			$line["keywords"] = strtolower($line["keywords"]); //convert to lower case
 			$paper["keywords"] = $line["keywords"];
@@ -221,54 +194,28 @@ class LibraryController {
 
 		return $keywords;
 	}
-	
-	public function getIEEEPapersWithAuthor($name, $limit)
-	{	
+
+	private function getIEEEPapers($word, $limit, $type)
+	{
 		$papers = array();
-		$urlBase = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?';
-        $author_name = "au=" . $name;
-        $limit_number = "&hc=".$limit;
-        $query = $urlBase . $author_name . $limit_number;
-        $response = file_get_contents($query);
-        $documents = simplexml_load_string($response);
-        foreach($documents as $document){
-        	$paper = array();
-        	$paper["source"] = "ieee";
-        	$paper["title"] = $document->title[0]; 
-        	$paper["id"] = $document->arnumber;
+		$ieeeURL = "";
 
-			$paper["doi"] = $document->doi;
+		if ($type == "author")
+		{
+			$urlBase = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?';
+	        $author_name = "au=" . $word;
+	        $limit_number = "&hc=".$limit;
+	        $ieeeURL = $urlBase . $author_name . $limit_number;
+		}
+		else
+		{
+			$ieeeURL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?thsrsterms=' .rawurlencode($word). '&hc=' .rawurlencode($limit);
+		}
 
-        	$paper["authors"] = $document->authors; //need to parse 
-        	$paper["abstract"] = $document->abstract; 
-        	$paper["keywords"]  = "";
-        	$count = count($document->thesaurusterms->term);
-        	
-        	for($a = 0; $a < $count; $a++){
-        		$word = $document->thesaurusterms->term[$a];
-        		$paper["keywords"]  =  $paper["keywords"]. " ". $word;
-        	}
-
-        	$paper["pdfURL"] = $document->pdf;
-        	$paper["publication"] = $document->pubtitle;
-        	$papers[] = $paper;
-
-        }
-        // Added the if statement to deal with 2 extraneous "papers" (xml parsing problem?)
-		if (count($papers) > 2)
-        {
-        	$papers = array_slice($papers, 2, count($papers));
-        }
-		return $papers;
-	}
-	
-	public function getIEEEPapersWithWord($word, $limit)
-	{	
-		$papers = array();
-		$ieeeURL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?thsrsterms=' .rawurlencode($word). '&hc=' .rawurlencode($limit);
         $response = file_get_contents($ieeeURL);
         $documents = simplexml_load_string($response);
-        foreach($documents as $document){
+        foreach($documents as $document)
+        {
         	$paper = array();
         	$paper["source"] = "ieee";
         	$paper["title"] = $document->title[0]; 
@@ -282,7 +229,8 @@ class LibraryController {
         	$paper["keywords"]  = "";
         	$count = count($document->thesaurusterms->term);
         	
-        	for($a = 0; $a < $count; $a++){
+        	for($a = 0; $a < $count; $a++)
+        	{
         		$word = $document->thesaurusterms->term[$a];
         		$paper["keywords"]  =  $paper["keywords"]. " ". $word;
         	}
@@ -389,8 +337,8 @@ class LibraryController {
 
 	public function combineKeywords($author, $limit)
 	{
-		$acmPapers = $this->getACMPapersWithAuthor($author, $limit);
-		$ieeePapers = $this->getIEEEPapersWithAuthor($author, $limit);
+		$acmPapers = $this->getACMPapers($author, $limit, "author");
+		$ieeePapers = $this->getIEEEPapers($author, $limit, "author");
 		$keywords = "";
 		if(count($acmPapers)==0 && count($ieeePapers)==0){
 
@@ -412,8 +360,8 @@ class LibraryController {
 	
 	public function combinePapers($word, $limit)
 	{
-		$acmPapers = $this->getACMPapersWithWord($word, $limit);
-		$ieeePapers = $this->getIEEEPapersWithWord($word, $limit);
+		$acmPapers = $this->getACMPapers($word, $limit, "word");
+		$ieeePapers = $this->getIEEEPapers($word, $limit, "word");
 		$papers = array_merge($acmPapers, $ieeePapers);
 		$numPapers = count($papers);
 		//echo "Initial amount of papers: $numPapers \n";
