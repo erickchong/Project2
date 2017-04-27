@@ -200,13 +200,7 @@ class LibraryController {
 		preg_match("/<PRE.*?>\n?(.*)<\/pre>/si", $bibtexHTML, $matches);
 
 		$bibtex = $matches[1];
-		for ($i = 0; $i < strlen($bibtex); $i++)
-		{
-			if (substr($bibtex, $i, 2) == "},")
-			{
-				$bibtex = substr($bibtex, 0, $i + 2) . "<br> " . substr($bibtex, $i + 2);
-			}
-		}
+		$bibtex = preg_replace("/\r\n|\r|\n/", '<br>', $bibtex);
 		return $bibtex;
 	}
 
@@ -356,7 +350,7 @@ class LibraryController {
 
 	public function getIEEEBibtex($id, $doi)
 	{
-		$ieeeURL = 'http://www.doi2bib.org/doi2bib?id=' . rawurlencode($id);
+		$ieeeURL = 'http://www.doi2bib.org/doi2bib?id=' . rawurlencode($doi);
 		$bibtex = @file_get_contents($ieeeURL);
 		if ($bibtex === false)
 		{
@@ -364,18 +358,7 @@ class LibraryController {
 		}
 		else
 		{	
-			// Attempting to insert <br> but formatting is more complex and different. TODO!!!
-			/*
-			$category = "";
-			for ($i = 0; $i < strlen($bibtex); $i++)
-			{
-
-				if (substr($bibtex, $i, 2) == "},")
-				{
-					$bibtex = substr($bibtex, 0, $i + 2) . "<br> " . substr($bibtex, $i + 2);
-				}
-			}
-			*/
+			$bibtex = preg_replace("/\r\n|\r|\n/", '<br>', $bibtex);
 			return $bibtex;
 		}
 		
