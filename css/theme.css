@@ -38,12 +38,17 @@ body {
 }
 
 .ui-progressbar.ui-widget-content {
-	color: #2C3E50;
-    background: #00FF00;
+	background: #2C3E50;    
 }
 
-.ui-progressbar.ui-widget-value{
-	background: #2C3E50;
+.ui-progressbar-value {
+	position: relative;
+	margin-top: 8px;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 18px;
+    padding-left: 10px;
+    background: yellow;
 }
 
  
@@ -52,7 +57,7 @@ body {
  	margin-top: 150px;
  	width: 600px;
  	height: 50px;
- 	
+ 	color: #FFFF00;
  	border: black 1px solid;
 }
 

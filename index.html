@@ -44,19 +44,25 @@
           var limit = $('#limitBox').val()
           var estimatedTime = Math.max(7000, limit * 35); 
           var progressbar = $("#wordCloudLoading");
+          var progressbarValue = progressbar.find( ".ui-progressbar-value" );
+          //progressbar.css({background: 'ff288c'});
+          // progressbarValue.css({
+          //   "background": '#FFFF00' 
+          // });
           progressbar.progressbar({
             value: 0
           });
+          //progressbar.css({background: 'ff288c'});
           progressbar.show(0);
     
           var t = 0, dt = 40;
-          var completionHandler = false;
+          var complete = false;
           function progress() { 
             var val = progressbar.progressbar("value");
       
-            progressbar.progressbar("value", completionHandler ? (val+5) : (25*Math.log(t/estimatedTime) + 100));
-      
-            if (val < 99 || !completionHandler) {
+           
+            progressbar.progressbar("value", complete ? (val+5) : (25*Math.log(t/estimatedTime) + 100)).children('.ui-progressbar-value').html(val.toPrecision(3) + '%').css("display", "block");
+            if (val < 99 || !complete) {
               t += dt;
               setTimeout(progress, dt);
             } else {
@@ -73,7 +79,7 @@
           limit: $('#limitBox').val()
         },
         success: function(msg){
-          //$('#wordCloudLoading').hide(0);
+          $('#wordCloudLoading').hide(0);
           $('#cloudBox').html(msg);
           $('#imageButton').css("visibility", "visible");
         }

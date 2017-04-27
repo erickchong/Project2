@@ -8,19 +8,20 @@
 }
 
 body {
-  	padding-top: 15px;
+  padding-top: 15px;
   	
-  	background: #2C3E50; /* For browsers that do not support gradients */
-	 background: -webkit-linear-gradient(#2C3E50, #FD746C); /* For Safari 5.1 to 6.0 */
-	 background: -o-linear-gradient(#2C3E50, #FD746C); /* For Opera 11.1 to 12.0 */
-	 background: -moz-linear-gradient(#2C3E50, #FD746C); /* For Firefox 3.6 to 15 */
-	 background: linear-gradient(#2C3E50, #FD746C); /* Standard syntax */
-  	font-family: Lucida Console;
+  background: #2C3E50; /* For browsers that do not support gradients */
+	background: -webkit-linear-gradient(#2C3E50, #FD746C); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(#2C3E50, #FD746C); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(#2C3E50, #FD746C); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(#2C3E50, #FD746C); /* Standard syntax */
+  font-family: Lucida Console;
 }
 
 input[type=submit] {
     
     margin: 0 auto;
+    display:block;
     padding:5px 15px; 
     background:#ccc; 
     border:0 none;
@@ -36,11 +37,41 @@ background: rgba(255,255,255,0.2);
 }
 
 #back {
-	 margin: 0 auto;
-    padding:5px 15px; 
-    background:#ccc; 
-    border:0 none;
-    cursor:pointer;
-    -webkit-border-radius: 5px;
-    border-radius: 5px; 
+	margin: 0 auto;
+  display:block;
+  padding:5px 15px; 
+  background:#ccc; 
+  border:0 none;
+  cursor:pointer;
+  -webkit-border-radius: 5px;
+  border-radius: 5px; 
 }
+
+#textdownload {
+  
+  text-align: center;
+  margin: 0 auto;
+  display:block;
+  padding:5px 15px; 
+  background:#ccc; 
+  border:0 none;
+  cursor:pointer;
+  -webkit-border-radius: 5px;
+  border-radius: 5px; 
+}
+
+#pdfdownload {
+
+  margin: 15px;
+  text-align: center;
+  margin: 0 auto;
+  display:block;
+  padding:5px 15px; 
+  background:#ccc; 
+  border:0 none;
+  cursor:pointer;
+  -webkit-border-radius: 5px;
+  border-radius: 5px; 
+}
+
+

@@ -25,6 +25,8 @@ $paper_list = $provider->combinePapers($word, $limit);
 </head>
 <header>
 	<div id="header"><?php echo strtoupper($word)?></div>
+	<button id="textdownload">Download list as plain text</button></br>
+	<button id="pdfdownload">Download list as PDF</button><br/>
 </header>
 <body>
 	<?php 
@@ -75,8 +77,7 @@ $paper_list = $provider->combinePapers($word, $limit);
 		echo "<input type=\"submit\" name=\"formSubmit\" value=\"Generate word cloud from subset of papers\" />";
 		echo "</form>";
 	?>
-<button id="textdownload">Download table as plain text</button></br>
-<button id="pdfdownload">Download table as PDF</button><br/>
+
 <a href="index.html"><button id="back">Back</button></a>
 </body>
 </html>
