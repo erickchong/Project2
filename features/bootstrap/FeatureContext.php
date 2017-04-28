@@ -399,12 +399,14 @@ class FeatureContext implements Context
         }
     }
 
+    public $numberfield;
     /**
      * @Given there is a paper number field
      */
     public function thereIsAPaperNumberField()
     {
-        throw new PendingException();
+        $this->numberfield = $this->page->findById("limitBox");
+        assertNotNull($this->numberfield);
     }
 
     /**
@@ -412,7 +414,7 @@ class FeatureContext implements Context
      */
     public function thePaperNumberFieldShouldBeEmpty()
     {
-        throw new PendingException();
+        $assertEquals("", $this->numberfield);
     }
 
     /**
@@ -420,7 +422,8 @@ class FeatureContext implements Context
      */
     public function theKeywordIsEnteredIntoTheSearchBar($arg1)
     {
-        throw new PendingException();
+        $this->searchTerm = $arg1;
+        $this->paperSearchBar->setValue($arg1);
     }
 
     /**
@@ -428,6 +431,9 @@ class FeatureContext implements Context
      */
     public function aStatusBarShouldAppear()
     {
-        throw new PendingException();
+        sleep(0.5);
+        $statusbar = $this->page->findById("wordCloudLoading");
+        assertNotNull($statusbar);
+        assertTrue($statusbar->isVisible());
     }
 }
