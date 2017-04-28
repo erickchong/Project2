@@ -6,3 +6,7 @@ Feature: Paper Search Bar
 	Scenario: Observing an empty paper search bar
 		Given there is a paper search bar
 		Then the paper search bar should be empty
+
+	Scenario: Observing an empty paper number field
+		Given there is a paper number field
+		Then the paper number field should be empty
