@@ -3,28 +3,103 @@
 <head>
 <title>NerdEngine</title>
 
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/bootstrap-theme.min.css" rel="stylesheet">
+<link href="./css/theme.css" rel="stylesheet">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript" src="./js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="./js/ajax.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script type="text/javascript" src="./js/fb-ui-share.js"></script>
 <script type="text/javascript" src="./js/html2canvas.js"></script>
 </head>
 
 <body>  
   <header>
-	<div id="header">NerdEngine</div>
+    <div id="header">NerdEngine</div>
   </header> 
   <div id="cloudPane">
-	<div id="cloudBox"></div>
+    <div id="cloudBox"></div>
+    <div id="wordCloudLoading" style="display:none"></div>
   </div>
   
-	<div id ="inputPane">
-	  <input id="inputBox" type="text" name="text" placeholder="Input Author Name">
-	  <input id="limitBox" type="text" name="text" placeholder="Input Paper Limit">
-	  <div id="buttons">
-		<button id="submitButton" class="btn btn-default">Search</button>
-		<button id="imageButton" class="btn btn-default">Download Image of Cloud</button>
-	  </div>
-	</div>
+    <div id ="inputPane">
+      <input id="inputBox" type="text" name="text" placeholder="Input Author Name">
+      <input id="limitBox" type="text" name="text" placeholder="Input Paper Limit">
+       
+      <div id="buttons">
+        <button id="submitButton" class="btn btn-default">Search</button>
+        <button id="imageButton" class="btn btn-default">Download Image of Cloud</button>
+        <button id="textdownload">Download list as plain text</button></br>
+        <button id="pdfdownload">Download list as PDF</button><br/>
+
+        <table id="papertable" border=0 style=\"width: 100%; height: 100%;\">
+      </div>
+    </div>
   
 </body>
 </html>
+
+<script>
+  $("#submitButton").click(function(){
+    $.ajax({
+        beforeSend: function() {
+          //$('#cloudBox').html("<div id=\"generating\">Generating Cloud...</div>");
+          var limit = $('#limitBox').val()
+          var estimatedTime = Math.max(7000, limit * 35); 
+          var progressbar = $("#wordCloudLoading");
+          var progressbarValue = progressbar.find( ".ui-progressbar-value" );
+          //progressbar.css({background: 'ff288c'});
+          // progressbarValue.css({
+          //   "background": '#FFFF00' 
+          // });
+          progressbar.progressbar({
+            value: 0
+          });
+          //progressbar.css({background: 'ff288c'});
+          progressbar.show(0);
+    
+          var t = 0, dt = 40;
+          var complete = false;
+          function progress() { 
+            var val = progressbar.progressbar("value");
+      
+           
+            progressbar.progressbar("value", complete ? (val+5) : (25*Math.log(t/estimatedTime) + 100)).children('.ui-progressbar-value').html(val.toPrecision(3) + '%').css("display", "block");
+            if (val < 99 || !complete) {
+              t += dt;
+              setTimeout(progress, dt);
+            } else {
+              return;
+            }
+          }
+          progress();
+        },
+        type: "post",
+        url: "getWordCloud.php",
+        data: {
+          prev: '',
+          name: $('#inputBox').val(),
+          limit: $('#limitBox').val()
+        },
+        success: function(msg){
+          $('#wordCloudLoading').hide(0);
+          $('#cloudBox').html(msg);
+          $('#imageButton').css("visibility", "visible");
+        }
+    });
+  });
+</script>
+
+<script>
+  document.getElementById("imageButton").onclick = function() {
+    var wordcloud = document.getElementById("cloudBox");
+    
+    html2canvas(wordcloud, {
+      onrendered: function(canvas) {
+        var image = canvas.toDataURL("image/png");
+        window.open(image);
+      }
+    });
+  }
+</script>
