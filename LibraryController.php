@@ -65,11 +65,11 @@ class LibraryController {
 		return $result;
 	}
 
-	public function getACMPapers($word, $limit, $type)
+	private function getACMPapers($word, $limit, $type)
 	{
 		$papers = array();
 
-		$acmURL - "";
+		$acmURL = "";
 
 		if ($type == "author")
 		{
@@ -114,7 +114,7 @@ class LibraryController {
 	}
 
 	// $conference, $limit
-	public function getACMPapersWithConference($conference, $limit){
+	private function getACMPapersWithConference($conference, $limit){
 		// Can't find a way at the moment :(
 		$papers = array();
 		$acmURL ='http://dl.acm.org/exportformats_search.cfm?query=' .rawurlencode($conference). '&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv';
@@ -248,7 +248,7 @@ class LibraryController {
 		return $papers;
 	}
 
-	public function getIEEEPapersWithConference($conference, $limit){
+	private function getIEEEPapersWithConference($conference, $limit){
 		$papers = array();
 		$ieeeURL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?jn=' .rawurlencode($conference). '&hc=' .rawurlencode($limit);
         $response = file_get_contents($ieeeURL);
@@ -296,7 +296,7 @@ class LibraryController {
 		return $abstract_is;
 	}
 
-	public function getIEEEBibtex($id, $doi)
+	private function getIEEEBibtex($id, $doi)
 	{
 		$ieeeURL = 'http://www.doi2bib.org/doi2bib?id=' . rawurlencode($doi);
 		$bibtex = @file_get_contents($ieeeURL);

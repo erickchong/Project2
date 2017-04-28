@@ -10,9 +10,7 @@ class WordCloud
     function filter_words($words) {
         $bad_words = "La,he,she,they,them,they,and,the,I,me,thislyricsisnotforcommercialuse,*******,This,Lyrics,is,NOT,for,Commercial,use";
         $bad_words = explode(",", $bad_words);
-
-        $filtered_words = array(); // Added this
-
+        $filtered_words = array();
         foreach ($words as $pos => $word) {
             if (!in_array(strtolower($word), $bad_words, TRUE)) {
                 $filtered_words[$pos] = $word;
@@ -32,11 +30,15 @@ class WordCloud
                 $frequency_list[$word] = 1;
             }
         }
+        // foreach($frequency_list as $x => $x_value) {
+        //     echo "Key=" . $x . ", Value=" . $x_value;
+        //     echo "<br>";
+        // }
         return $frequency_list;
     }
    
     /* Builds the word cloud and returns a string containing a div of the word cloud. */
-    function word_cloud($words, $name) {
+    function word_cloud($words, $name, $limit) {
         $tags = 0;
         $cloud = "<div id=\"innerCloud\">";
         
@@ -69,7 +71,7 @@ class WordCloud
             }
             
             if ($font_size >= $fmin) {
-                $cloud .= "<a href=\"getSongsForWord.php?artist={$name}&word={$word}\" style=\"font-size: {$font_size}px; color: $color;\">$word</a> ";
+                $cloud .= "<a href=\"getPapersForWord.php?author={$name}&word={$word}&limit={$limit}\" style=\"font-size: {$font_size}px; color: $color;\">$word</a> ";
                 $tags++;
             }
         }
@@ -131,7 +133,29 @@ class WordCloud
             $unique_words = count( array_unique($words) ); /* Unique word count */
             $words_filtered = $provider->filter_words($words); /* Filter out stop words from the word list */
             $word_frequency = $provider->word_freq($words); /* Build a word frequency list */
-            $word_c = $provider->word_cloud($word_frequency, $author); /* Generate a word cloud and get number of tags */
+            $word_c = $provider->word_cloud($word_frequency, $author, $limit); /* Generate a word cloud and get number of tags */
+            $word_cloud = $word_c[0]; /* The word cloud */
+            $tags = $word_c[1]; /* The number of tags in the word cloud*/
+
+            return $word_cloud;
+        }
+        
+    }
+
+    function CombinedWordCloudGenerator($papers){
+        
+        $provider = new WordCloud;
+        $library = new LibraryController;
+        $text = $library->combineKeywordsForMultiplePapers($papers);
+        if($text == ""){
+            return "author not found !";
+        }else{
+            $words = str_word_count($text, 1); /* Generate list of words */
+            $word_count = count($words); /* Word count */
+            $unique_words = count( array_unique($words) ); /* Unique word count */
+            $words_filtered = $provider->filter_words($words); /* Filter out stop words from the word list */
+            $word_frequency = $provider->word_freq($words); /* Build a word frequency list */
+            $word_c = $provider->word_cloud($word_frequency, 'saito', 10); /* Generate a word cloud and get number of tags */
             $word_cloud = $word_c[0]; /* The word cloud */
             $tags = $word_c[1]; /* The number of tags in the word cloud*/
 

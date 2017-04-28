@@ -152,6 +152,23 @@ final class WordCloudTest extends TestCase
 		//$this->assertLessThan($tags, 0);
 	}
 
+	public function testCombinedWordCloudGeneratorFound()
+	{
+		$cloud = new WordCloud();
+		$papers = array("acm-1348556");
+		$newCloud = $cloud->CombinedWordCloudGenerator($papers);
+		$this->assertGreaterThan(0, strlen($newCloud));
+	}
+
+	public function testCombinedWordCloudGeneratorNotFound()
+	{
+		$cloud = new WordCloud();
+		$papers = array("acm-blah");
+		$newCloud = $cloud->CombinedWordCloudGenerator($papers);
+		$this->assertEquals("author not found !", $newCloud);
+	}
+
+
 	// public function test_getLyricsForSong(){
 	// 	//test not needed
 	// }

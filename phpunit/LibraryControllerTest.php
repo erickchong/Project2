@@ -10,101 +10,7 @@ class LibraryControllerTest extends TestCase
 	{
 		$this->libraryController = new LibraryController();
 	}
-
-	public function testGetACMPapersWithAuthor()
-	{
-		$authorName = "Saito";
-		$limit = 5;
-		$acmPapers = array();
-		$acmPapers = $this->libraryController->getACMPapersWithAuthor($authorName, $limit);
-
-		$this->assertGreaterThan(0, count($acmPapers));
-		$this->assertLessThanOrEqual($limit, count($acmPapers));
-
-		foreach ($acmPapers as $paper)
-		{
-			$authors = $paper["authors"];
-			$foundAuthor = false;
-
-			foreach($authors as $author)
-			{
-				if (strpos($author, "Saito") !== false)
-				{
-					$foundAuthor = true;
-					break;
-				}
-			}
-			$this->assertEquals(true, $foundAuthor);
-		}
-	}
-
-	public function testGetACMPapersWithWord()
-	{
-		$word = "analysis";
-		$limit = 5;
-		$acmPapers = array();
-		$acmPapers = $this->libraryController->getACMPapersWithWord($word, $limit);
-
-		$this->assertGreaterThan(0, count($acmPapers));
-		$this->assertLessThanOrEqual($limit, count($acmPapers));
-
-		foreach ($acmPapers as $paper)
-		{
-			$authors = $paper["authors"];
-			$this->assertGreaterThan(0, count($authors));
-			$this->assertEquals("acm", $paper["source"]);
-		}
-
-	}
-
-	public function testGetIEEEPapersWithAuthor()
-	{
-		$authorName = "Saito";
-		$limit = 5;
-		$ieeePapers = array();
-		$ieeePapers = $this->libraryController->getIEEEPapersWithAuthor($authorName, $limit);
-
-		$this->assertGreaterThan(0, count($ieeePapers));
-		$this->assertLessThanOrEqual($limit, count($ieeePapers));
-		
-		foreach ($ieeePapers as $paper)
-		{
-			$authors = $paper["authors"];
-			$foundAuthor = false;
-
-			foreach($authors as $author)
-			{
-				if (strpos($author, "Saito") !== false)
-				{
-					$foundAuthor = true;
-					break;
-				}
-			}
-			$this->assertEquals(true, $foundAuthor);
-		}
-
-
-		
-	}
-
-	public function testGetIEEEPapersWithWord()
-	{
-		$word = "analysis";
-		$limit = 5;
-		$ieeePapers = array();
-		$ieeePapers = $this->libraryController->getIEEEPapersWithWord($word, $limit);
-
-		$this->assertGreaterThan(0, count($ieeePapers));
-		$this->assertLessThanOrEqual($limit, count($ieeePapers));
-
-		foreach ($ieeePapers as $paper)
-		{
-			$authors = $paper["authors"];
-			$this->assertGreaterThan(0, count($authors));
-			//$this->assertEquals("acm", $paper["source"]);
-		}
-	}
-
+	
 	public function testCombineKeywords()
 	{
 		$authorName = "saito";
@@ -143,17 +49,19 @@ class LibraryControllerTest extends TestCase
 		$this->assertGreaterThan(0, $acmCount);
 		$this->assertGreaterThan(0, $ieeeCount);
 	}
-
+	
 	public function testGetPapersForConferenceACM()
 	{
-		$conference = "2012 Conference on Lasers and Electro-Optics (CLEO)";
+		$conference = "Proceedings of the 23rd Symposium on Integrated Circuits and System Design";
 		$limit = 5;
 		$acmPapers = $this->libraryController->getPapersForConference($conference, "acm", $limit);
 
-		$this->assertEquals(0, count($acmPapers));
-	}
+		$this->assertGreaterThan(0, count($acmPapers));
+		$this->assertLessThanOrEqual($limit, count($acmPapers));
 
-		public function testGetPapersForConferenceIEEE()
+	}
+	
+	public function testGetPapersForConferenceIEEE()
 	{
 		$conference = "2012 Conference on Lasers and Electro-Optics (CLEO)";
 		$limit = 5;
@@ -180,18 +88,40 @@ class LibraryControllerTest extends TestCase
 		$abstract = $this->libraryController->getAbstractForPaper($title, "ieee", "4548940");
 		$this->assertGreaterThan(0, strlen($abstract));
 	}
-
+	
 	public function testGetBibtexForPaperACM()
 	{
-		$bibtex = $this->libraryController->getBibtexForPaper("acm", "1900331");
+		$bibtex = $this->libraryController->getBibtexForPaper("acm", "1348556", "1348556");
 		$this->assertGreaterThan(0, strlen($bibtex));
 	}
+	
+	public function testGetBibtexForPaperIEEE()
+	{
+		$bibtex = $this->libraryController->getBibtexForPaper("ieee", "blargh", "10.1109/IEMBS.2008.4650035");
+		$this->assertGreaterThan(0, strlen($bibtex));
+	}
+	
+	public function testGetBibtedForPaperIEEEFail()
+	{
+		$bibtex = $this->libraryController->getBibtexForPaper("ieee", "blargh", "ahaha");
+		$this->assertEquals("Bibtex not available :(", $bibtex);
+	}
 
-	// TODO: Whitebox test for downloading image of word cloud.
-	// Probably use Jasmine?
+	public function testCombineKeywordsForMultiplePapersACM()
+	{
+		$papers = array("acm-1348556");
+		$keywords = $this->libraryController->combineKeywordsForMultiplePapers($papers);
+		$this->assertGreaterThan(0, count($keywords));
+	}
 
+	public function testCombineKeywordsForMultiplePapersIEEE()
+	{
+		$papers = array("ieee-4650035");
+		$keywords = $this->libraryController->combineKeywordsForMultiplePapers($papers);
+		$this->assertGreaterThan(0, count($keywords));
+	}
 
-	// TODO: Blackbox test for exporting paper list as a pdf file or plain text
+		
 
 }
 
