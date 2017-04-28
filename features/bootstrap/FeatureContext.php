@@ -333,12 +333,13 @@ class FeatureContext implements Context
     public function theConferenceIsClicked($arg1)
     {
         $page = $this->session->getPage();
-        sleep(4);
+        sleep(7);
 
         $cells = $page->findAll("css", ".td1");
 
-        $conference = strtolower($cells[6]->getText());
-        $cells[6]->click();
+        $link = $cells[6]->find("xpath", "//a");
+        $this->conference = strtolower($cells[6]->getText());
+        $link->click();
     }
 
     /**
@@ -347,7 +348,86 @@ class FeatureContext implements Context
     public function aListOfPapersFromShouldBeLoaded($arg1)
     {
         sleep(5);
-        $header = strtolower($this->session->getPage()->findById("header")->getText());
-        // assertEquals($header, $this->conference);
+        $header = $this->session->getPage()->findById("header");
+        assertEquals(strtolower($header->getText()), $this->conference);
+    }
+
+    /**
+     * @Given I go to :arg1
+     */
+    public function iGoTo($arg1)
+    {
+        $this->session->visit($arg1);
+    }
+
+    /**
+     * @Given I wait for :arg1 seconds
+     */
+    public function iWaitForSeconds($arg1)
+    {
+        sleep($arg1);
+    }
+
+    public $papername;
+    /**
+     * @Given I click on the first paper's name
+     */
+    public function iClickOnTheFirstPaperSName()
+    {
+        $cells = $this->page->findAll("css", ".td1");
+        $this->papername = $cells[4]->getText();
+        $cells[4]->click();
+    }
+
+    /**
+     * @Then I should be navigated to the abstract for the paper
+     */
+    public function iShouldBeNavigatedToTheAbstractForThePaper()
+    {
+        $header = $this->page->findById("header");
+        assertEquals(strtolower($header->getText()), strtolower($this->papername));
+    }
+
+    /**
+     * @Then the word :arg1 should be highlighted
+     */
+    public function theWordShouldBeHighlighted($arg1)
+    {
+        $highlighteds = $this->page->findAll("css", ".highlight");
+        foreach ($highlighteds as $highlighted) {
+            assertEquals(strtolower($highlighted->getText()), strtolower($arg1));
+        }
+    }
+
+    /**
+     * @Given there is a paper number field
+     */
+    public function thereIsAPaperNumberField()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the paper number field should be empty
+     */
+    public function thePaperNumberFieldShouldBeEmpty()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given the keyword :arg1 is entered into the search bar
+     */
+    public function theKeywordIsEnteredIntoTheSearchBar($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then a status bar should appear
+     */
+    public function aStatusBarShouldAppear()
+    {
+        throw new PendingException();
     }
 }

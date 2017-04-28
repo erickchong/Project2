@@ -37,5 +37,5 @@ Scenario: Clicking on a conference name should display other papers from the con
 	And we are searching 10 papers
 	And the search button is clicked
 	And the word "Programming" is clicked in the cloud 
-	And the conference "Proceedings of the 21st ACM SIGPLAN International Conference on Functional Programming" is clicked
-	Then a list of papers from "Proceedings of the 21st ACM SIGPLAN International Conference on Functional Programming" should be loaded
+	And the conference "" is clicked
+	Then a list of papers from "" should be loaded
