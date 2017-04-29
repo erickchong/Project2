@@ -181,7 +181,7 @@ class FeatureContext implements Context
      */
     public function eachPaperInTheListShouldHaveAPdfLink()
     {
-        sleep(4);
+        sleep(9);
         $page = $this->session->getPage();
 
         $cells = $page->findAll("css", ".td1");
@@ -332,8 +332,8 @@ class FeatureContext implements Context
      */
     public function theConferenceIsClicked($arg1)
     {
+        sleep(10);
         $page = $this->session->getPage();
-        sleep(7);
 
         $cells = $page->findAll("css", ".td1");
 
@@ -414,7 +414,7 @@ class FeatureContext implements Context
      */
     public function thePaperNumberFieldShouldBeEmpty()
     {
-        $assertEquals("", $this->numberfield);
+        assertEquals("", $this->numberfield->getText());
     }
 
     /**

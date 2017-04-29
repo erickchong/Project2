@@ -39,3 +39,4 @@ Scenario: Clicking on a conference name should display other papers from the con
 	And the word "Programming" is clicked in the cloud 
 	And the conference "" is clicked
 	Then a list of papers from "" should be loaded
+
